@@ -1,81 +1,97 @@
 import React from "react";
 import styled from "styled-components";
 import UserContext from "../context/UserContext.js";
-import { useNavigate } from "react-router-dom";
 
-export default function Signup() {
-  const navigate = useNavigate();
-
-  const [createUser, setCreateUser] = React.useState({
-    CPF: "",
-    name: "",
-    email: "",
-    phone: "",
-    birthDate: "",
-    password: "",
-    repeat_password: "",
-  });
+export default function Address() {
   const { userCreate, setUserCreate } = React.useContext(UserContext);
-
+  const [address, setAddress] = React.useState({
+    zipCode: "",
+    street: "",
+    number: "",
+    district: "",
+    city: "",
+    state: "",
+  });
   function create(event) {
     event.preventDefault();
-    console.log(createUser);
-    setUserCreate({ ...createUser });
+    console.log(address);
+    setUserCreate({ ...userCreate, address });
     console.log(userCreate);
-    navigate("/address");
   }
   return (
     <Container>
       <Form onSubmit={(event) => create(event)}>
         <input
           type="number"
-          placeholder="CPF"
-          value={createUser.CPF}
+          placeholder="CEP"
+          value={address.zipCode}
           onChange={(e) =>
-            setCreateUser({ ...createUser, CPF: e.target.value })
+            setAddress({
+              ...address,
+              zipCode: e.target.value,
+            })
           }
         ></input>
         <input
           type="text"
-          placeholder="Nome"
-          value={createUser.name}
+          placeholder="Rua"
+          value={address.street}
           onChange={(e) =>
-            setCreateUser({ ...createUser, name: e.target.value })
+            setAddress({
+              ...address,
+              street: e.target.value,
+            })
           }
         ></input>
         <input
           type="number"
-          placeholder="Telefone"
-          value={createUser.phone}
+          placeholder="Numero"
+          value={address.number}
           onChange={(e) =>
-            setCreateUser({ ...createUser, phone: e.target.value })
+            setAddress({
+              ...address,
+              number: e.target.value,
+            })
           }
         ></input>
         <input
-          type="date"
-          placeholder="Data de nascimento"
-          value={createUser.birthDate}
+          type="text"
+          placeholder="Bairro"
+          value={address.district}
           onChange={(e) =>
-            setCreateUser({ ...createUser, birthDate: e.target.value })
+            setAddress({
+              ...address,
+              district: e.target.value,
+            })
           }
         ></input>
         <input
-          type="password"
-          placeholder="Senha"
-          value={createUser.password}
+          type="text"
+          placeholder="Cidade"
+          value={address.city}
           onChange={(e) =>
-            setCreateUser({ ...createUser, password: e.target.value })
+            setAddress({
+              ...address,
+              city: e.target.value,
+            })
           }
         ></input>
         <input
-          type="password"
-          placeholder="Confirme sua senha"
-          value={createUser.repeat_password}
+          type="text"
+          placeholder="Estado"
+          value={address.state}
           onChange={(e) =>
-            setCreateUser({ ...createUser, repeat_password: e.target.value })
+            setAddress({
+              ...address,
+              state: e.target.value,
+            })
           }
         ></input>
-        <Confirm type="submit">Confirmar</Confirm>
+        <Confirm type="submit">
+          Finalizar
+          <br />
+          cadastro
+        </Confirm>
       </Form>
     </Container>
   );
