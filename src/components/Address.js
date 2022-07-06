@@ -12,11 +12,10 @@ export default function Address() {
     city: "",
     state: "",
   });
-  function create(event) {
+
+  async function create(event) {
     event.preventDefault();
-    console.log(address);
     setUserCreate({ ...userCreate, address });
-    console.log(userCreate);
   }
   return (
     <Container>
@@ -127,7 +126,7 @@ const Form = styled.form`
   }
 `;
 const Confirm = styled.button`
-  height: 35px;
+  height: 55px;
   width: 133px;
   border-radius: 5px;
   background-color: #e99baf;

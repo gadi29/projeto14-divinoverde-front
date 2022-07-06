@@ -19,11 +19,10 @@ export default function Signup() {
 
   function create(event) {
     event.preventDefault();
-    console.log(createUser);
     setUserCreate({ ...createUser });
-    console.log(userCreate);
     navigate("/address");
   }
+  console.log("oii");
   return (
     <Container>
       <Form onSubmit={(event) => create(event)}>
