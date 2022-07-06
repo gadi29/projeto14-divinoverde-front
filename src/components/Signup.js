@@ -5,8 +5,8 @@ import { useNavigate } from "react-router-dom";
 
 export default function Signup() {
   const navigate = useNavigate();
-
-  const [createUser, setCreateUser] = React.useState({
+  const { userCreate, setUserCreate } = React.useContext(UserContext);
+  const [userData, setUserData] = React.useState({
     CPF: "",
     name: "",
     email: "",
@@ -15,63 +15,55 @@ export default function Signup() {
     password: "",
     repeat_password: "",
   });
-  const { userCreate, setUserCreate } = React.useContext(UserContext);
 
   function create(event) {
     event.preventDefault();
-    setUserCreate({ ...createUser });
+    setUserCreate({ ...userData });
     navigate("/address");
   }
-  console.log("oii");
   return (
     <Container>
       <Form onSubmit={(event) => create(event)}>
         <input
           type="number"
           placeholder="CPF"
-          value={createUser.CPF}
-          onChange={(e) =>
-            setCreateUser({ ...createUser, CPF: e.target.value })
-          }
+          value={userData.CPF}
+          onChange={(e) => setUserData({ ...userData, CPF: e.target.value })}
         ></input>
         <input
           type="text"
           placeholder="Nome"
-          value={createUser.name}
-          onChange={(e) =>
-            setCreateUser({ ...createUser, name: e.target.value })
-          }
+          value={userData.name}
+          onChange={(e) => setUserData({ ...userData, name: e.target.value })}
         ></input>
         <input
           type="number"
           placeholder="Telefone"
-          value={createUser.phone}
-          onChange={(e) =>
-            setCreateUser({ ...createUser, phone: e.target.value })
-          }
+          value={userData.phone}
+          onChange={(e) => setUserData({ ...userData, phone: e.target.value })}
         ></input>
         <input
           type="date"
           placeholder="Data de nascimento"
-          value={createUser.birthDate}
+          value={userData.birthDate}
           onChange={(e) =>
-            setCreateUser({ ...createUser, birthDate: e.target.value })
+            setUserData({ ...userData, birthDate: e.target.value })
           }
         ></input>
         <input
           type="password"
           placeholder="Senha"
-          value={createUser.password}
+          value={userData.password}
           onChange={(e) =>
-            setCreateUser({ ...createUser, password: e.target.value })
+            setUserData({ ...userData, password: e.target.value })
           }
         ></input>
         <input
           type="password"
           placeholder="Confirme sua senha"
-          value={createUser.repeat_password}
+          value={userData.repeat_password}
           onChange={(e) =>
-            setCreateUser({ ...createUser, repeat_password: e.target.value })
+            setUserData({ ...userData, repeat_password: e.target.value })
           }
         ></input>
         <Confirm type="submit">Confirmar</Confirm>

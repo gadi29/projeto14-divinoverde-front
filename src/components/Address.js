@@ -1,8 +1,11 @@
 import React from "react";
 import styled from "styled-components";
 import UserContext from "../context/UserContext.js";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 export default function Address() {
+  const navigate = useNavigate();
   const { userCreate, setUserCreate } = React.useContext(UserContext);
   const [address, setAddress] = React.useState({
     zipCode: "",
@@ -15,7 +18,9 @@ export default function Address() {
 
   async function create(event) {
     event.preventDefault();
-    setUserCreate({ ...userCreate, address });
+    const promise = axios.post("http://localhost:5000/signup", userCreate);
+    promise.then((res) => navigate("/"));
+    promise.catch((res) => alert("Houve um erro tente novamnete mais tarde"));
   }
   return (
     <Container>
@@ -24,67 +29,70 @@ export default function Address() {
           type="number"
           placeholder="CEP"
           value={address.zipCode}
-          onChange={(e) =>
-            setAddress({
-              ...address,
-              zipCode: e.target.value,
-            })
-          }
+          onChange={(e) => {
+            setAddress({ ...address, zipCode: e.target.value });
+            setUserCreate({ ...userCreate, address });
+          }}
         ></input>
         <input
           type="text"
           placeholder="Rua"
           value={address.street}
-          onChange={(e) =>
+          onChange={(e) => {
             setAddress({
               ...address,
               street: e.target.value,
-            })
-          }
+            });
+            setUserCreate({ ...userCreate, address });
+          }}
         ></input>
         <input
           type="number"
           placeholder="Numero"
           value={address.number}
-          onChange={(e) =>
+          onChange={(e) => {
             setAddress({
               ...address,
               number: e.target.value,
-            })
-          }
+            });
+            setUserCreate({ ...userCreate, address });
+          }}
         ></input>
         <input
           type="text"
           placeholder="Bairro"
           value={address.district}
-          onChange={(e) =>
+          onChange={(e) => {
             setAddress({
               ...address,
               district: e.target.value,
-            })
-          }
+            });
+            setUserCreate({ ...userCreate, address });
+          }}
         ></input>
         <input
           type="text"
           placeholder="Cidade"
           value={address.city}
-          onChange={(e) =>
+          onChange={(e) => {
             setAddress({
               ...address,
               city: e.target.value,
-            })
-          }
+            });
+            setUserCreate({ ...userCreate, address });
+          }}
         ></input>
         <input
           type="text"
           placeholder="Estado"
           value={address.state}
-          onChange={(e) =>
+          onChange={(e) => {
             setAddress({
               ...address,
               state: e.target.value,
-            })
-          }
+            });
+            setUserCreate({ ...userCreate, address });
+          }}
         ></input>
         <Confirm type="submit">
           Finalizar
