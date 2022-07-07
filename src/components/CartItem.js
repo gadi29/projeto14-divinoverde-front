@@ -5,7 +5,7 @@ export default function CartItem({ userCart }) {
   return (
     <Container>
       <img src={userCart.image} alt={userCart.title} />
-      <h1>{userCart.title}</h1>
+      <h3>{userCart.title}</h3>
       <h2>R$ {userCart.price}</h2>
     </Container>
   );
@@ -16,6 +16,7 @@ const Container = styled.div`
   width: 375px;
   padding: 15px;
   margin-top: 20px;
+  margin-bottom: 20px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -24,7 +25,7 @@ const Container = styled.div`
     width: 65px;
     margin: 10px;
   }
-  h1 {
+  h3 {
     font-size: 20px;
   }
 `;
