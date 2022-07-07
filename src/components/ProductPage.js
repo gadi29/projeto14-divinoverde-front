@@ -1,26 +1,29 @@
 import axios from "axios";
 import React from "react";
 import styled from "styled-components";
+import { TailSpin } from "react-loader-spinner";
+import { useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export default function ProductPage() {
   const [load, setLoad] = React.useState(true);
   const [productData, setProductData] = React.useState();
+  const { id } = useParams();
 
-  async function product() {
-    const promise = axios.get(
-      `http://localhost:5000/product/62c72d84cd4ed38e4c4adc75`
-    );
+  React.useEffect(() => {
+    const promise = axios.get(`http://localhost:5000/product/${id}`);
     promise.then((res) => {
       setProductData(res.data);
-      console.log(res.data);
       setLoad(false);
     });
-  }
+  }, []);
 
   return (
     <>
       {load ? (
-        <button onClick={() => product()}>pega</button>
+        <Container>
+          <TailSpin />
+        </Container>
       ) : (
         <>
           <Container>
@@ -85,5 +88,6 @@ const Description = styled.div`
   }
   p {
     font-size: 15px;
+    margin-left: 30px;
   }
 `;
