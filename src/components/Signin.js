@@ -1,17 +1,20 @@
 import React from "react";
 import styled from "styled-components";
 import UserContext from "../context/UserContext.js";
+import { useNavigate } from "react-router-dom";
 
 export default function Signin() {
+  const navigate = useNavigate();
   const { userCreate, setUserCreate } = React.useContext(UserContext);
 
   function creatEmail(event) {
     event.preventDefault();
+    navigate("/sign-up");
   }
   return (
     <>
       <Container>
-        <Form nSubmit={(event) => creatEmail(event)}>
+        <Form onSubmit={(event) => creatEmail(event)}>
           <input
             type="email"
             placeholder="Email"
@@ -19,9 +22,7 @@ export default function Signin() {
               setUserCreate({ ...userCreate, email: e.target.value })
             }
           ></input>
-          <Confirm>
-            Prosseguir com <br />o cadastro
-          </Confirm>
+          <Confirm>Prosseguir com o cadastro</Confirm>
         </Form>
       </Container>
     </>
@@ -60,7 +61,7 @@ const Form = styled.form`
 `;
 const Confirm = styled.button`
   height: 55px;
-  width: 133px;
+  width: 140px;
   border-radius: 5px;
   background-color: #e99baf;
   border: none;
