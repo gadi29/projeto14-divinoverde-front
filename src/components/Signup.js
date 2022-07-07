@@ -88,7 +88,7 @@ export default function Signup() {
 }
 
 const Container = styled.div`
-  width: 375px;
+  width: 100vw;
   height: 100vh;
   display: flex;
   justify-content: center;
