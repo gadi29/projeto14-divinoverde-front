@@ -6,6 +6,7 @@ import UserContext from "../context/UserContext";
 import Address from "./Address.js";
 import ProductPage from "./ProductPage.js";
 import Signin from "./Signin.js";
+import Cart from "./Cart.js";
 
 function App() {
   const [userCreate, setUserCreate] = React.useState();
@@ -18,6 +19,7 @@ function App() {
           <Route path="/address" element={<Address />} />
           <Route path="/product/:id" element={<ProductPage />} />
           <Route path="/sign-in" element={<Signin />} />
+          <Route path="/cart/:userId" element={<Cart />} />
         </Routes>
       </BrowserRouter>
     </UserContext.Provider>
