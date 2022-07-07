@@ -18,7 +18,7 @@ export default function Signup() {
 
   function create(event) {
     event.preventDefault();
-    setUserCreate({ ...userData });
+    setUserCreate({ ...userData, email: userCreate.email });
     navigate("/address");
   }
   return (
