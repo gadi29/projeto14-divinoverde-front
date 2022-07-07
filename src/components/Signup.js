@@ -10,7 +10,6 @@ export default function Signup() {
   const [userData, setUserData] = React.useState({
     CPF: "",
     name: "",
-    email: "",
     phone: "",
     birthDate: "",
     password: "",
@@ -22,7 +21,7 @@ export default function Signup() {
     const signupSchema = joi.object({
       CPF: joi.number().required(),
       name: joi.string().trim().required(),
-      email: joi.string().email().required(),
+
       phone: joi.number(),
       birthDate: joi.string().required(),
       password: joi.string().required(),
@@ -32,8 +31,10 @@ export default function Signup() {
     if (!error) {
       setUserCreate({ ...userCreate, ...userData });
       navigate("/address");
+    } else {
+      return alert(error.details[0].message);
     }
-    return alert(error.details[0].message);
+    return;
   }
 
   return (
@@ -88,7 +89,7 @@ export default function Signup() {
 }
 
 const Container = styled.div`
-  width: 375px;
+  width: 100vw;
   height: 100vh;
   display: flex;
   justify-content: center;

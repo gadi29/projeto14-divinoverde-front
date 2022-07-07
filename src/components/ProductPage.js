@@ -8,26 +8,34 @@ export default function ProductPage() {
   async function product() {
     setLoad(true);
     const promise = axios.get(
-      `http://localhost:5000/product/62c626802ca6b756ed689601`
+      `http://localhost:5000/product/62c72d84cd4ed38e4c4adc75`
     );
     promise.then((res) => {
       setProductData(res.data);
+      console.log(res.data);
+      setLoad(false);
     });
   }
 
   return (
     <>
-      <Container>
-        <img src={productData.image} alt={productData.title} />
-        <h1>{productData.title} </h1>
-        <h2>R$ {productData.price} </h2>
-        <button>Adicionar carrinho</button>
-        <Description>
-          <h3>Descrição</h3>
-          <p>{productData.description} </p>
-        </Description>
-      </Container>
-      <button onClick={() => product()}>pega</button>
+      {load ? (
+        <p>loading</p>
+      ) : (
+        <>
+          <Container>
+            <img src={productData.image} alt={productData.title} />
+            <h1>{productData.title} </h1>
+            <h2>R$ {productData.price} </h2>
+            <button>Adicionar carrinho</button>
+            <Description>
+              <h3>Descrição</h3>
+              <p>{productData.description} </p>
+            </Description>
+          </Container>
+          <button onClick={() => product()}>pega</button>
+        </>
+      )}
     </>
   );
 }
