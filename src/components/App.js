@@ -4,6 +4,7 @@ import Header from "./Header.js";
 import Signup from "./Signup.js";
 import UserContext from "../context/UserContext";
 import Address from "./Address.js";
+import ProductPage from "./ProductPage.js";
 
 function App() {
   const [userCreate, setUserCreate] = React.useState();
@@ -14,6 +15,7 @@ function App() {
         <Routes>
           <Route path="/sign-up" element={<Signup />} />
           <Route path="/address" element={<Address />} />
+          <Route path="/product/:id" element={<ProductPage />} />
         </Routes>
       </BrowserRouter>
     </UserContext.Provider>
