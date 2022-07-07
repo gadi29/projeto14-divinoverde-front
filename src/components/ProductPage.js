@@ -3,7 +3,6 @@ import React from "react";
 import styled from "styled-components";
 import { TailSpin } from "react-loader-spinner";
 import { useParams } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
 
 export default function ProductPage() {
   const [load, setLoad] = React.useState(true);
