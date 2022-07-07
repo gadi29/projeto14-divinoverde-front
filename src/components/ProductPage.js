@@ -19,10 +19,10 @@ export default function ProductPage() {
   }, []);
 
   function addCart(id) {
-    console.log(id);
     const promise = axios.post(`http://localhost:5000/cart/${id}`);
     promise.then(() => {
       setAddedItem(true);
+      console.log("Adiconado com sucesso");
     });
   }
 
