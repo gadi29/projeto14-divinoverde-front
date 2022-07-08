@@ -7,9 +7,8 @@ import UserContext from "../context/UserContext.js";
 
 function SignIn () {
   const [newRegisterEmail, setNewRegisterEmail] = useState("");
-  const [user, setUser] = useState({ email: "", password: "" });
 
-  const { userCreate, setUserCreate } = React.useContext(UserContext);
+  const { user, setUser, userCreate, setUserCreate } = React.useContext(UserContext);
 
   const navigate = useNavigate();
 
@@ -22,6 +21,18 @@ function SignIn () {
   function login(e) {
     e.preventDefault();
     const promisse = axios.post('http://localhost:5000/sign-in', { ...user });
+
+    promisse.then(r => {
+      setUser(r.data);
+      navigate('/');
+    });
+    promisse.catch(r => {
+      if (r.response.status === 401) {
+        alert('Email ou senha não conferem.');
+      } else {
+        alert(`Erro ${r.response.status}! Tente novamente...`);
+      }
+    });
   }
 
   return (

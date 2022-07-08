@@ -8,14 +8,18 @@ import Address from "./Address.js";
 
 function App() {
   const [userCreate, setUserCreate] = React.useState();
+  const [user, setUser] = React.useState();
+
   return (
-    <UserContext.Provider value={{ userCreate, setUserCreate }}>
+    <UserContext.Provider value={{ user, setUser }}>
       <BrowserRouter>
         <Header />
         <Routes>
+          <UserContext.Provider value={{ userCreate, setUserCreate }}>
           <Route path="/sign-in" element={<SignIn/>} />
           <Route path="/sign-up" element={<Signup />} />
           <Route path="/address" element={<Address />} />
+          </UserContext.Provider>
         </Routes>
       </BrowserRouter>
     </UserContext.Provider>
