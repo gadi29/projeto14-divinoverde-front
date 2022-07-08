@@ -7,6 +7,7 @@ import UserContext from "../context/UserContext.js";
 
 function SignIn () {
   const [newRegisterEmail, setNewRegisterEmail] = useState("");
+  const [userSignIn, setUserSignIn] = useState({ email:"", password:"" });
 
   const { user, setUser, userCreate, setUserCreate } = React.useContext(UserContext);
 
@@ -20,7 +21,7 @@ function SignIn () {
 
   function login(e) {
     e.preventDefault();
-    const promisse = axios.post('http://localhost:5000/sign-in', { ...user });
+    const promisse = axios.post('http://localhost:5000/sign-in', { ...userSignIn });
 
     promisse.then(r => {
       setUser(r.data);
@@ -53,15 +54,15 @@ function SignIn () {
     <input 
         type='email'
         placeholder='E-mail'
-        value={user.email}
-        onChange={(e) => setUser({...user, email:e.target.value })}
+        value={userSignIn.email}
+        onChange={(e) => setUserSignIn({...userSignIn, email:e.target.value })}
         required
       />
       <input 
         type='password'
         placeholder='Senha'
-        value={user.password}
-        onChange={(e) => setUser({...user, password:e.target.value })}
+        value={userSignIn.password}
+        onChange={(e) => setUserSignIn({...userSignIn, password:e.target.value })}
         required
       />
       <button type='submit'>Entrar</button>
@@ -90,9 +91,11 @@ const Container = styled.div`
   form {
     display: flex;
     flex-direction: column;
+    align-items: center;
 
     input {
       background-color: #72AB97;
+      outline: none;
       border: none;
       border-radius: 5px;
 
@@ -115,7 +118,10 @@ const Container = styled.div`
       border: none;
       border-radius: 5px;
 
+      width: 250px;
+      height: 50px;
       margin-top: 19px;
+      margin-bottom: 70px;
 
       color: #FFFFFF;
       font-size: 20px;

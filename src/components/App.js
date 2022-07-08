@@ -12,15 +12,13 @@ function App() {
   const [user, setUser] = React.useState();
 
   return (
-    <UserContext.Provider value={{ user, setUser }}>
+    <UserContext.Provider value={{ user, setUser, userCreate, setUserCreate }}>
       <BrowserRouter>
         <Header />
         <Routes>
-          <UserContext.Provider value={{ userCreate, setUserCreate }}>
           <Route path="/sign-in" element={<SignIn/>} />
           <Route path="/sign-up" element={<Signup />} />
           <Route path="/address" element={<Address />} />
-          </UserContext.Provider>
           <Route path="/product/:id" element={<ProductPage />} />
         </Routes>
       </BrowserRouter>
