@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import UserContext from "../context/UserContext.js";
 import { useNavigate } from "react-router-dom";
+import joi from "joi";
 
 export default function Signup() {
   const navigate = useNavigate();
@@ -9,7 +10,6 @@ export default function Signup() {
   const [userData, setUserData] = React.useState({
     CPF: "",
     name: "",
-    email: "",
     phone: "",
     birthDate: "",
     password: "",
@@ -18,9 +18,25 @@ export default function Signup() {
 
   function create(event) {
     event.preventDefault();
-    setUserCreate({ ...userData, email: userCreate.email });
-    navigate("/address");
+    const signupSchema = joi.object({
+      CPF: joi.number().required(),
+      name: joi.string().trim().required(),
+
+      phone: joi.number(),
+      birthDate: joi.string().required(),
+      password: joi.string().required(),
+      repeat_password: joi.ref("password"),
+    });
+    const { error } = signupSchema.validate(userData);
+    if (!error) {
+      setUserCreate({ ...userCreate, ...userData });
+      navigate("/address");
+    } else {
+      return alert(error.details[0].message);
+    }
+    return;
   }
+
   return (
     <Container>
       <Form onSubmit={(event) => create(event)}>
@@ -73,7 +89,7 @@ export default function Signup() {
 }
 
 const Container = styled.div`
-  width: 375px;
+  width: 100vw;
   height: 100vh;
   display: flex;
   justify-content: center;

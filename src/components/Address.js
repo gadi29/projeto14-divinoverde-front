@@ -18,9 +18,9 @@ export default function Address() {
 
   async function create(event) {
     event.preventDefault();
-    const promise = axios.post("http://localhost:5000/signup", userCreate);
+    const promise = axios.post("http://localhost:5000/sign-up", userCreate);
     promise.then((res) => navigate("/"));
-    promise.catch((res) => alert("Houve um erro tente novamnete mais tarde"));
+    promise.catch((res) => alert("Houve um erro tente novamente mais tarde"));
   }
   return (
     <Container>
@@ -105,7 +105,7 @@ export default function Address() {
 }
 
 const Container = styled.div`
-  width: 375px;
+  width: 100vw;
   height: 100vh;
   display: flex;
   justify-content: center;
