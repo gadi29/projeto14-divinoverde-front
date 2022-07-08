@@ -5,7 +5,15 @@ import styled from "styled-components";
 
 function Home () {
   const [products, setProducts] = useState([]);
+  const categories = [];
+  const [showCategories, setShowCategories] = useState(false);
   const navigate = useNavigate();
+
+  for (let i = 0; i < products.length; i++) {
+    categories.push(products[i].category);
+  }
+
+  const listCategories = categories.filter((category, index) => categories.indexOf(category) === index);
 
   useEffect((() => {
     const promisse = axios.get('http://localhost:5000/products');
@@ -21,8 +29,16 @@ function Home () {
   return (
     <Container>
       <Filter>
-        <h2>Categoria</h2>
-        <ion-icon name="chevron-down-outline"></ion-icon>
+        <CategorySelect>
+          <h2>Categorias</h2>
+          <ion-icon name="chevron-down-outline" onClick={() => setShowCategories(!showCategories)}></ion-icon>
+        </CategorySelect>
+        <ListCategories showCategories={showCategories}>
+          <ul>
+            {listCategories.map(category => 
+              <li onClick={() => navigate(`/?category=${category}`)}>{category}</li>)}
+          </ul>
+        </ListCategories>
       </Filter>
       <ProductList>
         {products.map((product, index) => 
@@ -44,10 +60,14 @@ const Container = styled.div`
 `;
 
 const Filter = styled.div`
-  
   margin-top: 25px;
   margin-bottom: 20px;
   
+  display: flex;
+  flex-direction: column;
+`;
+
+const CategorySelect = styled.div`
   display: flex;
 
   h2 {
@@ -59,6 +79,27 @@ const Filter = styled.div`
 
   ion-icon {
     cursor: pointer;
+  }
+`;
+
+const ListCategories = styled.div`
+  background-color: #72AB97;
+  opacity: 0.8;
+  border-radius: 5px;
+
+  position: absolute;
+
+  width: 100px;
+  margin-top: 23px;
+  padding: 0 5px;
+  padding-top: 5px;
+
+  display: ${({ showCategories }) => showCategories ? "inherit" : "none"};
+
+  li {
+    cursor: pointer;
+
+    margin-bottom: 5px;
   }
 `;
 
