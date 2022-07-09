@@ -7,6 +7,7 @@ import { useParams } from "react-router-dom";
 export default function ProductPage() {
   const [load, setLoad] = React.useState(true);
   const [productData, setProductData] = React.useState();
+  const [addedItem, setAddedItem] = React.useState(false);
   const { id } = useParams();
 
   React.useEffect(() => {
@@ -16,6 +17,14 @@ export default function ProductPage() {
       setLoad(false);
     });
   }, []);
+
+  function addCart(id) {
+    const promise = axios.post(`http://localhost:5000/cart/${id}`);
+    promise.then(() => {
+      setAddedItem(true);
+      console.log("Adiconado com sucesso");
+    });
+  }
 
   return (
     <>
@@ -29,7 +38,10 @@ export default function ProductPage() {
             <img src={productData.image} alt={productData.title} />
             <h1>{productData.title} </h1>
             <h2>R$ {productData.price} </h2>
-            <button>Adicionar carrinho</button>
+            <button onClick={() => addCart(productData._id)}>
+              Adicionar carrinho
+            </button>
+            {addedItem ? <p>Item adicionado no carrinho</p> : <></>}
             <Description>
               <h3>Descrição</h3>
               <p>{productData.description} </p>

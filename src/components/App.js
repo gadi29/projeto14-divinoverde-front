@@ -7,7 +7,12 @@ import Address from "./Address.js";
 import Home from "./Home.js";
 import ProductPage from "./ProductPage.js";
 
+import Signin from "./Signin.js";
+import Cart from "./Cart.js";
+
+
 import UserContext from "../context/UserContext";
+
 
 function App() {
   const [userCreate, setUserCreate] = React.useState();
@@ -23,6 +28,10 @@ function App() {
           <Route path="/address" element={<Address />} />
           <Route path="/" element={<Home />} />
           <Route path="/product/:id" element={<ProductPage />} />
+
+          <Route path="/sign-in" element={<Signin />} />
+          <Route path="/cart/:userId" element={<Cart />} />
+
         </Routes>
       </BrowserRouter>
     </UserContext.Provider>
