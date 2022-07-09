@@ -7,7 +7,7 @@ function Header () {
 
   return (
     <Container>
-      <h1 onClick={() => navigate('/home')}>DivinoVerde</h1>
+      <h1 onClick={() => navigate('/')}>DivinoVerde</h1>
       <div>
         <p>olá, user</p>
         <ion-icon name="chevron-down-outline"></ion-icon>
