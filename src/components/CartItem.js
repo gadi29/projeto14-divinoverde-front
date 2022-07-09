@@ -6,7 +6,7 @@ export default function CartItem({ userCart }) {
     <Container>
       <img src={userCart.image} alt={userCart.title} />
       <h3>{userCart.title}</h3>
-      <h2>R$ {userCart.price}</h2>
+      <h2>R$ {userCart.price.toFixed(2).replace(".", ",")}</h2>
     </Container>
   );
 }

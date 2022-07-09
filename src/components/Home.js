@@ -3,20 +3,20 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import styled from "styled-components";
 
-function Home () {
+function Home() {
   const [products, setProducts] = useState([]);
   const navigate = useNavigate();
 
-  useEffect((() => {
-    const promisse = axios.get('http://localhost:5000/products');
+  useEffect(() => {
+    const promisse = axios.get("http://localhost:5000/products");
 
-    promisse.then(r => {
+    promisse.then((r) => {
       setProducts([...r.data]);
     });
-    promisse.catch(r => {
-      alert(`Erro ${r.response.status}.`)
+    promisse.catch((r) => {
+      alert(`Erro ${r.response.status}.`);
     });
-  }), []);
+  }, []);
 
   return (
     <Container>
@@ -25,14 +25,17 @@ function Home () {
         <ion-icon name="chevron-down-outline"></ion-icon>
       </Filter>
       <ProductList>
-        {products.map((product, index) => 
-          <Product key={index} onClick={() => navigate(`/product/${product._id}`)}>
+        {products.map((product, index) => (
+          <Product
+            key={index}
+            onClick={() => navigate(`/product/${product._id}`)}
+          >
             <img src={product.image} alt="Imagem do produto" />
             <h3>{product.title}</h3>
-            <h4>R${product.price},00</h4>
+            <h4>R${product.price.toFixed(2).replace(".", ",")}</h4>
           </Product>
-        )}
-      </ProductList> 
+        ))}
+      </ProductList>
     </Container>
   );
 }
@@ -44,10 +47,9 @@ const Container = styled.div`
 `;
 
 const Filter = styled.div`
-  
   margin-top: 25px;
   margin-bottom: 20px;
-  
+
   display: flex;
 
   h2 {
@@ -77,7 +79,7 @@ const Product = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  
+
   img {
     border-radius: 5px;
 
