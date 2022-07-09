@@ -11,11 +11,14 @@ export default function ProductPage() {
   const [addedItem, setAddedItem] = React.useState(false);
   const { id } = useParams();
   const { user, setUser } = React.useContext(UserContext);
-  const config = {
-    headers: {
-      Authorization: `Bearer ${user.token}`,
-    },
-  };
+  let config = "";
+  if (user) {
+    config = {
+      headers: {
+        Authorization: `Bearer ${user.token}`,
+      },
+    };
+  }
 
   React.useEffect(() => {
     const promise = axios.get(`http://localhost:5000/product/${id}`);
