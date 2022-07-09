@@ -4,21 +4,48 @@ import { Link, useParams } from "react-router-dom";
 import styled from "styled-components";
 import CartItem from "./CartItem.js";
 import { TailSpin } from "react-loader-spinner";
+import UserContext from "../context/UserContext.js";
 
 export default function Cart() {
   const [load, setLoad] = React.useState(true);
   const [userCart, setUserCart] = React.useState("");
   const { userId } = useParams();
   const [total, setTotal] = React.useState(0);
+  const { user, setUser } = React.useContext(UserContext);
+  let config = "";
+  if (user) {
+    config = {
+      headers: {
+        Authorization: `Bearer ${user.token}`,
+      },
+    };
+  }
+
   React.useEffect(() => {
-    const promise = axios.get(`http://localhost:5000/cart/${userId}`);
+    const promise = axios.get(`http://localhost:5000/cart`, config);
     promise.then((res) => {
       setTotal(res.data.total);
       setUserCart(res.data.userData);
       setLoad(false);
     });
+    promise.catch(() => setLoad(false));
   }, []);
 
+  function loadCartItem() {
+    if (userCart) {
+      return (
+        <>
+          {userCart.map((e, index) => (
+            <CartItem userCart={userCart[index]} key={index} />
+          ))}
+          <p>Valor total R$ {total.toFixed(2).replace(".", ",")}</p>
+        </>
+      );
+    }
+    if (!user || !userCart) {
+      return <h2>Carrinho vazio </h2>;
+    }
+  }
   return (
     <>
       {load ? (
@@ -28,10 +55,7 @@ export default function Cart() {
       ) : (
         <Container>
           <h1>Carrinho</h1>
-          {userCart.map((e, index) => (
-            <CartItem userCart={userCart[index]} key={index} />
-          ))}
-          <p>Valor total R$ {total.toFixed(2).replace(".", ",")}</p>
+          {loadCartItem()}
           <button>Fechar compra</button>
 
           <Link to="/">Continuar comprando</Link>

@@ -1,17 +1,20 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import styled from 'styled-components';
+import styled from "styled-components";
 
-function Header () {
+function Header() {
   const navigate = useNavigate();
 
   return (
     <Container>
-      <h1 onClick={() => navigate('/')}>DivinoVerde</h1>
+      <h1 onClick={() => navigate("/")}>DivinoVerde</h1>
       <div>
         <p>olá, user</p>
         <ion-icon name="chevron-down-outline"></ion-icon>
-        <ion-icon name="cart-outline"></ion-icon>
+        <ion-icon
+          name="cart-outline"
+          onClick={() => navigate("/cart")}
+        ></ion-icon>
       </div>
     </Container>
   );
@@ -20,7 +23,7 @@ function Header () {
 export default Header;
 
 const Container = styled.header`
-  background-color: #0E553C;
+  background-color: #0e553c;
 
   width: 100%;
   height: 65px;
@@ -31,14 +34,14 @@ const Container = styled.header`
   align-items: center;
 
   h1 {
-    font-family: 'Judson', serif !important;
-    color: #FFFFFF;
+    font-family: "Judson", serif !important;
+    color: #ffffff;
     font-size: 32px;
     cursor: pointer;
   }
 
   div {
-    color: #FFFFFF;
+    color: #ffffff;
     display: flex;
     align-items: center;
 
@@ -47,17 +50,15 @@ const Container = styled.header`
 
       margin-right: 3px;
     }
-  
+
     ion-icon {
       cursor: pointer;
     }
 
     ion-icon:last-of-type {
-    font-size: 30px;
+      font-size: 30px;
 
-    margin-left: 10px;
+      margin-left: 10px;
     }
   }
-
-
 `;

@@ -3,12 +3,19 @@ import React from "react";
 import styled from "styled-components";
 import { TailSpin } from "react-loader-spinner";
 import { useParams } from "react-router-dom";
+import UserContext from "../context/UserContext.js";
 
 export default function ProductPage() {
   const [load, setLoad] = React.useState(true);
   const [productData, setProductData] = React.useState();
   const [addedItem, setAddedItem] = React.useState(false);
   const { id } = useParams();
+  const { user, setUser } = React.useContext(UserContext);
+  const config = {
+    headers: {
+      Authorization: `Bearer ${user.token}`,
+    },
+  };
 
   React.useEffect(() => {
     const promise = axios.get(`http://localhost:5000/product/${id}`);
@@ -19,7 +26,7 @@ export default function ProductPage() {
   }, []);
 
   function addCart(id) {
-    const promise = axios.post(`http://localhost:5000/cart/${id}`);
+    const promise = axios.post(`http://localhost:5000/cart/${id}`, {}, config);
     promise.then(() => {
       setAddedItem(true);
       console.log("Adiconado com sucesso");
