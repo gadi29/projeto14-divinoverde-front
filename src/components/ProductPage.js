@@ -47,7 +47,7 @@ export default function ProductPage() {
           <Container>
             <img src={productData.image} alt={productData.title} />
             <h1>{productData.title} </h1>
-            <h2>R$ {productData.price} </h2>
+            <h2>R$ {productData.price.toFixed(2).replace(".", ",")} </h2>
             <button onClick={() => addCart(productData._id)}>
               Adicionar carrinho
             </button>
