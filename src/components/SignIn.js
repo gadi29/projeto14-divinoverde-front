@@ -17,9 +17,18 @@ function SignIn() {
 
   function sendToSignUp(e) {
     e.preventDefault();
+    setLoad(true);
+    const promisse = axios.get("http://localhost:5000/sign-in", { email: newRegisterEmail });
 
-    setUserCreate({ ...userCreate, email: newRegisterEmail });
-    navigate("/sign-up");
+    promisse.then((r) => {
+      setUserCreate({ ...userCreate, email: newRegisterEmail });
+      setLoad(false);
+      navigate("/sign-up");
+    });
+    promisse.catch((r) => {
+      setLoad(false);
+      alert(`Erro ${r.response.status}`);
+    });
   }
 
   function login(e) {
@@ -52,10 +61,13 @@ function SignIn() {
           type="email"
           placeholder="E-mail"
           value={newRegisterEmail}
+          disabled={load}
           onChange={(e) => setNewRegisterEmail(e.target.value)}
           required
         />
-        <button type="submit">Prosseguir com o cadastro</button>
+        <button type="submit">
+          {load ? <ThreeDots color="#FFFFFF" /> : "Prosseguir com o cadastro"}
+        </button>
       </form>
       <h2>Faça seu login:</h2>
       <form onSubmit={login}>
@@ -80,7 +92,7 @@ function SignIn() {
           required
         />
         <button type="submit" disabled={load}>
-          {load ? <ThreeDots color="#fff" /> : <>Entrar</>}
+          {load ? <ThreeDots color="#fff" /> : "Entrar"}
         </button>
       </form>
     </Container>
