@@ -6,11 +6,22 @@ import { TailSpin } from "react-loader-spinner";
 
 function Home() {
   const [products, setProducts] = useState([]);
+  const [category, setCategory] = useState(null);
+  const [listCategories, setListCategories] = useState([]);
+  const [showCategories, setShowCategories] = useState(false);
   const navigate = useNavigate();
   const [load, setLoad] = useState(true);
 
-  useEffect(() => {
-    const promisse = axios.get("http://localhost:5000/products");
+  useEffect((() => {
+    let promisse = null;
+
+    if (!category || category === "Todas") {
+      promisse = axios.get('http://localhost:5000/products');
+    } else {
+      promisse = axios.get(`http://localhost:5000/products?category=${category}`);
+    }
+
+    setShowCategories(!showCategories);
 
     promisse.then((r) => {
       setProducts([...r.data]);
@@ -19,13 +30,32 @@ function Home() {
     promisse.catch((r) => {
       alert(`Erro ${r.response.status}.`);
     });
-  }, []);
+  }), [category]);
+
+  useEffect((() => {
+    const promisse = axios.get('http://localhost:5000/categories');
+
+    promisse.then(r => {
+      setListCategories([ "Todas", ...r.data ]);
+    });
+    promisse.catch(r => {
+      alert(`Erro ${r.response.status}.`)
+    });
+  }), []);
 
   return (
     <Container>
       <Filter>
-        <h2>Categoria</h2>
-        <ion-icon name="chevron-down-outline"></ion-icon>
+        <CategorySelect>
+          <h2>Categorias</h2>
+          <ion-icon name="chevron-down-outline" onClick={() => setShowCategories(!showCategories)}></ion-icon>
+        </CategorySelect>
+        <ListCategories showCategories={showCategories}>
+          <ul>
+            {listCategories.map(category => 
+              <li onClick={() => setCategory(category)}>{category}</li>)}
+          </ul>
+        </ListCategories>
       </Filter>
       {load ? (
         <Loading>
@@ -60,6 +90,11 @@ const Filter = styled.div`
   margin-bottom: 20px;
 
   display: flex;
+  flex-direction: column;
+`;
+
+const CategorySelect = styled.div`
+  display: flex;
 
   h2 {
     font-size: 18px;
@@ -70,6 +105,27 @@ const Filter = styled.div`
 
   ion-icon {
     cursor: pointer;
+  }
+`;
+
+const ListCategories = styled.div`
+  background-color: #72AB97;
+  opacity: 0.8;
+  border-radius: 5px;
+
+  position: absolute;
+
+  width: 100px;
+  margin-top: 23px;
+  padding: 0 5px;
+  padding-top: 5px;
+
+  display: ${({ showCategories }) => showCategories ? "inherit" : "none"};
+
+  li {
+    cursor: pointer;
+
+    margin-bottom: 5px;
   }
 `;
 

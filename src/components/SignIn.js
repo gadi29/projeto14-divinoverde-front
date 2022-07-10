@@ -11,8 +11,7 @@ function SignIn() {
   const [userSignIn, setUserSignIn] = useState({ email: "", password: "" });
   const [load, setLoad] = React.useState(false);
 
-  const { user, setUser, userCreate, setUserCreate } =
-    React.useContext(UserContext);
+  const { setUser, userCreate, setUserCreate } = React.useContext(UserContext);
 
   const navigate = useNavigate();
 
