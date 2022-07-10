@@ -7,6 +7,8 @@ import Address from "./Address.js";
 import Home from "./Home.js";
 import ProductPage from "./ProductPage.js";
 import Cart from "./Cart.js";
+import CheckOut from "./CheckOut.js";
+import Success from "./SuccessScreen.js";
 
 import UserContext from "../context/UserContext";
 
@@ -19,12 +21,14 @@ function App() {
       <BrowserRouter>
         <Header />
         <Routes>
+          <Route path="/" element={<Home />} />
           <Route path="/sign-in" element={<SignIn />} />
           <Route path="/sign-up" element={<Signup />} />
           <Route path="/address" element={<Address />} />
-          <Route path="/" element={<Home />} />
           <Route path="/product/:id" element={<ProductPage />} />
           <Route path="/cart" element={<Cart />} />
+          <Route path="/checkout" element={<CheckOut />} />
+          <Route path="/success" element={<Success />} />
         </Routes>
       </BrowserRouter>
     </UserContext.Provider>
