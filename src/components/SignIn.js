@@ -9,7 +9,7 @@ function SignIn () {
   const [newRegisterEmail, setNewRegisterEmail] = useState("");
   const [userSignIn, setUserSignIn] = useState({ email:"", password:"" });
 
-  const { user, setUser, userCreate, setUserCreate } = React.useContext(UserContext);
+  const { setUser, userCreate, setUserCreate } = React.useContext(UserContext);
 
   const navigate = useNavigate();
 

@@ -5,6 +5,7 @@ import styled from "styled-components";
 
 function Home () {
   const [products, setProducts] = useState([]);
+  const [category, setCategory] = useState(null);
   const categories = [];
   const [showCategories, setShowCategories] = useState(false);
   const navigate = useNavigate();
@@ -16,7 +17,13 @@ function Home () {
   const listCategories = categories.filter((category, index) => categories.indexOf(category) === index);
 
   useEffect((() => {
-    const promisse = axios.get('http://localhost:5000/products');
+    let promisse = null;
+
+    if (!category) {
+      promisse = axios.get('http://localhost:5000/products');
+    } else {
+      promisse = axios.get(`http://localhost:5000/products?category=${category}`);
+    }
 
     promisse.then(r => {
       setProducts([...r.data]);
@@ -24,7 +31,7 @@ function Home () {
     promisse.catch(r => {
       alert(`Erro ${r.response.status}.`)
     });
-  }), []);
+  }), [category]);
 
   return (
     <Container>
@@ -36,7 +43,7 @@ function Home () {
         <ListCategories showCategories={showCategories}>
           <ul>
             {listCategories.map(category => 
-              <li onClick={() => navigate(`/?category=${category}`)}>{category}</li>)}
+              <li onClick={() => setCategory(category)}>{category}</li>)}
           </ul>
         </ListCategories>
       </Filter>
