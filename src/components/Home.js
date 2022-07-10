@@ -52,8 +52,8 @@ function Home() {
         </CategorySelect>
         <ListCategories showCategories={showCategories}>
           <ul>
-            {listCategories.map(category => 
-              <li onClick={() => setCategory(category)}>{category}</li>)}
+            {listCategories.map((category, index) => 
+              <li key={index} onClick={() => setCategory(category)}>{category}</li>)}
           </ul>
         </ListCategories>
       </Filter>
