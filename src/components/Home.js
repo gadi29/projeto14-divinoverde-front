@@ -110,20 +110,27 @@ const CategorySelect = styled.div`
 
 const ListCategories = styled.div`
   background-color: #72AB97;
-  opacity: 0.8;
   border-radius: 5px;
 
   position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 
   width: 100px;
   margin-top: 23px;
   padding: 0 5px;
-  padding-top: 5px;
+  padding-top: 10px;
 
   display: ${({ showCategories }) => showCategories ? "inherit" : "none"};
 
   li {
+    color: #FFFFFF;
+    font-size: 18px;
     cursor: pointer;
+
+    text-align: center;
 
     margin-bottom: 5px;
   }
