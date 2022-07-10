@@ -81,6 +81,8 @@ const Container = styled.div`
   margin-top: 50px;
 
   img {
+    border-radius: 5px;
+    object-fit: cover;
     width: 230px;
     height: 235px;
     margin: 10px;
