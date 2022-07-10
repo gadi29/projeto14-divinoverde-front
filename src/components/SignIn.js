@@ -4,10 +4,12 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import UserContext from "../context/UserContext.js";
+import { ThreeDots } from "react-loader-spinner";
 
 function SignIn() {
   const [newRegisterEmail, setNewRegisterEmail] = useState("");
   const [userSignIn, setUserSignIn] = useState({ email: "", password: "" });
+  const [load, setLoad] = React.useState(false);
 
   const { user, setUser, userCreate, setUserCreate } =
     React.useContext(UserContext);
@@ -23,15 +25,18 @@ function SignIn() {
 
   function login(e) {
     e.preventDefault();
+    setLoad(true);
     const promisse = axios.post("http://localhost:5000/sign-in", {
       ...userSignIn,
     });
 
     promisse.then((r) => {
       setUser(r.data);
+      setLoad(false);
       navigate("/");
     });
     promisse.catch((r) => {
+      setLoad(false);
       if (r.response.status === 401) {
         alert("Email ou senha não conferem.");
       } else {
@@ -59,6 +64,7 @@ function SignIn() {
           type="email"
           placeholder="E-mail"
           value={userSignIn.email}
+          disabled={load}
           onChange={(e) =>
             setUserSignIn({ ...userSignIn, email: e.target.value })
           }
@@ -68,12 +74,15 @@ function SignIn() {
           type="password"
           placeholder="Senha"
           value={userSignIn.password}
+          disabled={load}
           onChange={(e) =>
             setUserSignIn({ ...userSignIn, password: e.target.value })
           }
           required
         />
-        <button type="submit">Entrar</button>
+        <button type="submit" disabled={load}>
+          {load ? <ThreeDots color="#fff" /> : <>Entrar</>}
+        </button>
       </form>
     </Container>
   );
@@ -134,6 +143,9 @@ const Container = styled.div`
       color: #ffffff;
       font-size: 20px;
       font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       &:hover {
         cursor: pointer;
         filter: brightness(130%);
