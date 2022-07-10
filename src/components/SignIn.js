@@ -1,34 +1,36 @@
 import axios from "axios";
-import React from "react";
-import { useState } from "react";
+import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import UserContext from "../context/UserContext.js";
 import { ThreeDots } from "react-loader-spinner";
 
 function SignIn() {
-  const [newRegisterEmail, setNewRegisterEmail] = useState("");
+  const [newRegister, setNewRegister] = useState({ email: "" });
   const [userSignIn, setUserSignIn] = useState({ email: "", password: "" });
-  const [load, setLoad] = React.useState(false);
+  const [load, setLoad] = useState(false);
 
-  const { setUser, userCreate, setUserCreate } = React.useContext(UserContext);
+  const { setUser, userCreate, setUserCreate } = useContext(UserContext);
 
   const navigate = useNavigate();
 
-  function sendToSignUp(e) {
+  async function sendToSignUp(e) {
     e.preventDefault();
     setLoad(true);
-    const promisse = axios.get("http://localhost:5000/sign-in", { email: newRegisterEmail });
+    
+    try {
+      console.log(newRegister)
+      const { status } = await axios.get("http://localhost:5000/sign-in", { ...newRegister, });
 
-    promisse.then((r) => {
-      setUserCreate({ ...userCreate, email: newRegisterEmail });
+      if (status === 200) {
+        setUserCreate({ ...userCreate, email: newRegister.email });
+        setLoad(false);
+        navigate("/sign-up");
+      }
+    } catch (error) {
       setLoad(false);
-      navigate("/sign-up");
-    });
-    promisse.catch((r) => {
-      setLoad(false);
-      alert(`Erro ${r.response.status}`);
-    });
+      alert(`Erro ${error}`);
+    };
   }
 
   function login(e) {
@@ -60,9 +62,9 @@ function SignIn() {
         <input
           type="email"
           placeholder="E-mail"
-          value={newRegisterEmail}
+          value={newRegister.email}
           disabled={load}
-          onChange={(e) => setNewRegisterEmail(e.target.value)}
+          onChange={(e) => setNewRegister({ ...newRegister, email: e.target.value})}
           required
         />
         <button type="submit">
