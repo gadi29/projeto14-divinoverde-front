@@ -6,6 +6,7 @@ import Signup from "./Signup.js";
 import Address from "./Address.js";
 import Home from "./Home.js";
 import ProductPage from "./ProductPage.js";
+import Cart from "./Cart.js";
 
 import UserContext from "../context/UserContext";
 
@@ -18,11 +19,12 @@ function App() {
       <BrowserRouter>
         <Header />
         <Routes>
-          <Route path="/sign-in" element={<SignIn/>} />
+          <Route path="/sign-in" element={<SignIn />} />
           <Route path="/sign-up" element={<Signup />} />
           <Route path="/address" element={<Address />} />
           <Route path="/" element={<Home />} />
           <Route path="/product/:id" element={<ProductPage />} />
+          <Route path="/cart" element={<Cart />} />
         </Routes>
       </BrowserRouter>
     </UserContext.Provider>

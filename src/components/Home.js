@@ -2,13 +2,15 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import styled from "styled-components";
+import { TailSpin } from "react-loader-spinner";
 
-function Home () {
+function Home() {
   const [products, setProducts] = useState([]);
   const [category, setCategory] = useState(null);
   const [listCategories, setListCategories] = useState([]);
   const [showCategories, setShowCategories] = useState(false);
   const navigate = useNavigate();
+  const [load, setLoad] = useState(true);
 
   useEffect((() => {
     let promisse = null;
@@ -21,11 +23,12 @@ function Home () {
 
     setShowCategories(!showCategories);
 
-    promisse.then(r => {
+    promisse.then((r) => {
       setProducts([...r.data]);
+      setLoad(false);
     });
-    promisse.catch(r => {
-      alert(`Erro ${r.response.status}.`)
+    promisse.catch((r) => {
+      alert(`Erro ${r.response.status}.`);
     });
   }), [category]);
 
@@ -38,7 +41,7 @@ function Home () {
     promisse.catch(r => {
       alert(`Erro ${r.response.status}.`)
     });
-  }), [])
+  }), []);
 
   return (
     <Container>
@@ -54,15 +57,24 @@ function Home () {
           </ul>
         </ListCategories>
       </Filter>
-      <ProductList>
-        {products.map((product, index) => 
-          <Product key={index} onClick={() => navigate(`/product/${product._id}`)}>
-            <img src={product.image} alt="Imagem do produto" />
-            <h3>{product.title}</h3>
-            <h4>R${product.price},00</h4>
-          </Product>
-        )}
-      </ProductList> 
+      {load ? (
+        <Loading>
+          <TailSpin />
+        </Loading>
+      ) : (
+        <ProductList>
+          {products.map((product, index) => (
+            <Product
+              key={index}
+              onClick={() => navigate(`/product/${product._id}`)}
+            >
+              <img src={product.image} alt="Imagem do produto" />
+              <h3>{product.title}</h3>
+              <h4>R${product.price.toFixed(2).replace(".", ",")}</h4>
+            </Product>
+          ))}
+        </ProductList>
+      )}
     </Container>
   );
 }
@@ -76,7 +88,7 @@ const Container = styled.div`
 const Filter = styled.div`
   margin-top: 25px;
   margin-bottom: 20px;
-  
+
   display: flex;
   flex-direction: column;
 `;
@@ -132,7 +144,7 @@ const Product = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  
+
   img {
     border-radius: 5px;
 
@@ -149,4 +161,12 @@ const Product = styled.div`
   h4 {
     font-size: 12px;
   }
+`;
+
+const Loading = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 50vh;
+  width: 100vw;
 `;

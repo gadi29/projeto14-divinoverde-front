@@ -1,13 +1,25 @@
 import axios from "axios";
 import React from "react";
 import styled from "styled-components";
-import { TailSpin } from "react-loader-spinner";
+import { TailSpin, ThreeDots } from "react-loader-spinner";
 import { useParams } from "react-router-dom";
+import UserContext from "../context/UserContext.js";
 
 export default function ProductPage() {
   const [load, setLoad] = React.useState(true);
+  const [loadAdd, setLoadAdd] = React.useState(false);
   const [productData, setProductData] = React.useState();
+  const [addedItem, setAddedItem] = React.useState(false);
   const { id } = useParams();
+  const { user, setUser } = React.useContext(UserContext);
+  let config = "";
+  if (user) {
+    config = {
+      headers: {
+        Authorization: `Bearer ${user.token}`,
+      },
+    };
+  }
 
   React.useEffect(() => {
     const promise = axios.get(`http://localhost:5000/product/${id}`);
@@ -16,6 +28,16 @@ export default function ProductPage() {
       setLoad(false);
     });
   }, []);
+
+  function addCart(id) {
+    setLoadAdd(true);
+    const promise = axios.post(`http://localhost:5000/cart/${id}`, {}, config);
+    promise.then(() => {
+      setAddedItem(true);
+      setLoadAdd(false);
+      console.log("Adiconado com sucesso");
+    });
+  }
 
   return (
     <>
@@ -28,8 +50,17 @@ export default function ProductPage() {
           <Container>
             <img src={productData.image} alt={productData.title} />
             <h1>{productData.title} </h1>
-            <h2>R$ {productData.price} </h2>
-            <button>Adicionar carrinho</button>
+            <h2>R$ {productData.price.toFixed(2).replace(".", ",")} </h2>
+            <button disabled={loadAdd} onClick={() => addCart(productData._id)}>
+              {loadAdd ? (
+                <>
+                  <ThreeDots color="#fff" />
+                </>
+              ) : (
+                <>Adicionar tem</>
+              )}
+            </button>
+            {addedItem ? <p>Item adicionado no carrinho</p> : <></>}
             <Description>
               <h3>Descrição</h3>
               <p>{productData.description} </p>
@@ -70,6 +101,9 @@ const Container = styled.div`
     color: #fff;
     border-radius: 5px;
     font-size: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     &:hover {
       cursor: pointer;
       filter: brightness(130%);
