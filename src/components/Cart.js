@@ -73,7 +73,7 @@ export default function Cart() {
 }
 const Container = styled.div`
   width: 100vw;
-  height: 100vh;
+  height: 90vh;
   display: flex;
 
   align-items: center;
