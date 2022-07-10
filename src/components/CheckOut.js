@@ -168,7 +168,7 @@ const Top = styled.div`
   }
 
   h3 {
-    background-color: #0E553C;
+    background-color: #72AB97;
     color: #FFFFFF;
     font-size: 15px;
     font-weight: 600;

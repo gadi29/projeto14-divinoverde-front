@@ -8,6 +8,7 @@ import Home from "./Home.js";
 import ProductPage from "./ProductPage.js";
 import Cart from "./Cart.js";
 import CheckOut from "./CheckOut.js";
+import Success from "./SuccessScreen.js";
 
 import UserContext from "../context/UserContext";
 
@@ -27,6 +28,7 @@ function App() {
           <Route path="/product/:id" element={<ProductPage />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/checkout" element={<CheckOut />} />
+          <Route path="/success" element={<Success />} />
         </Routes>
       </BrowserRouter>
     </UserContext.Provider>
