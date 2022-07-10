@@ -6,24 +6,20 @@ import styled from "styled-components";
 function Home () {
   const [products, setProducts] = useState([]);
   const [category, setCategory] = useState(null);
-  const categories = [];
+  const [listCategories, setListCategories] = useState([]);
   const [showCategories, setShowCategories] = useState(false);
   const navigate = useNavigate();
-
-  for (let i = 0; i < products.length; i++) {
-    categories.push(products[i].category);
-  }
-
-  const listCategories = categories.filter((category, index) => categories.indexOf(category) === index);
 
   useEffect((() => {
     let promisse = null;
 
-    if (!category) {
+    if (!category || category === "Todas") {
       promisse = axios.get('http://localhost:5000/products');
     } else {
       promisse = axios.get(`http://localhost:5000/products?category=${category}`);
     }
+
+    setShowCategories(!showCategories);
 
     promisse.then(r => {
       setProducts([...r.data]);
@@ -32,6 +28,17 @@ function Home () {
       alert(`Erro ${r.response.status}.`)
     });
   }), [category]);
+
+  useEffect((() => {
+    const promisse = axios.get('http://localhost:5000/categories');
+
+    promisse.then(r => {
+      setListCategories([ "Todas", ...r.data ]);
+    });
+    promisse.catch(r => {
+      alert(`Erro ${r.response.status}.`)
+    });
+  }), [])
 
   return (
     <Container>
