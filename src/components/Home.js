@@ -21,7 +21,7 @@ function Home() {
       promisse = axios.get(`http://localhost:5000/products?category=${category}`);
     }
 
-    setShowCategories(!showCategories);
+    setShowCategories(false);
 
     promisse.then((r) => {
       setProducts([...r.data]);
