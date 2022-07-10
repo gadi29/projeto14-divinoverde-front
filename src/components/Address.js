@@ -123,9 +123,13 @@ const Form = styled.form`
     background-color: #72ab97;
     border-radius: 5px;
     border: none;
+    outline: none;
     margin-bottom: 20px;
-    padding: 5px;
-    box-sizing: border-box;
+    padding: 15px;
+
+    font-size: 24px;
+    color: #FFFFFF;
+    font-weight: 600;
 
     &::placeholder {
       color: #fff;
@@ -141,6 +145,7 @@ const Confirm = styled.button`
   border: none;
   color: #fff;
   font-size: 20px;
+  font-weight: 600;
 
   &:hover {
     cursor: pointer;
