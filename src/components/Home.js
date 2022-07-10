@@ -2,16 +2,19 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import styled from "styled-components";
+import { TailSpin } from "react-loader-spinner";
 
 function Home() {
   const [products, setProducts] = useState([]);
   const navigate = useNavigate();
+  const [load, setLoad] = useState(true);
 
   useEffect(() => {
     const promisse = axios.get("http://localhost:5000/products");
 
     promisse.then((r) => {
       setProducts([...r.data]);
+      setLoad(false);
     });
     promisse.catch((r) => {
       alert(`Erro ${r.response.status}.`);
@@ -24,18 +27,24 @@ function Home() {
         <h2>Categoria</h2>
         <ion-icon name="chevron-down-outline"></ion-icon>
       </Filter>
-      <ProductList>
-        {products.map((product, index) => (
-          <Product
-            key={index}
-            onClick={() => navigate(`/product/${product._id}`)}
-          >
-            <img src={product.image} alt="Imagem do produto" />
-            <h3>{product.title}</h3>
-            <h4>R${product.price.toFixed(2).replace(".", ",")}</h4>
-          </Product>
-        ))}
-      </ProductList>
+      {load ? (
+        <Loading>
+          <TailSpin />
+        </Loading>
+      ) : (
+        <ProductList>
+          {products.map((product, index) => (
+            <Product
+              key={index}
+              onClick={() => navigate(`/product/${product._id}`)}
+            >
+              <img src={product.image} alt="Imagem do produto" />
+              <h3>{product.title}</h3>
+              <h4>R${product.price.toFixed(2).replace(".", ",")}</h4>
+            </Product>
+          ))}
+        </ProductList>
+      )}
     </Container>
   );
 }
@@ -96,4 +105,12 @@ const Product = styled.div`
   h4 {
     font-size: 12px;
   }
+`;
+
+const Loading = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 50vh;
+  width: 100vw;
 `;

@@ -36,7 +36,14 @@ export default function Cart() {
       return (
         <>
           {userCart.map((e, index) => (
-            <CartItem userCart={userCart[index]} key={index} />
+            <CartItem
+              userCartIndex={userCart[index]}
+              key={index}
+              userCart={userCart}
+              setUserCart={setUserCart}
+              setTotal={setTotal}
+              total={total}
+            />
           ))}
           <p>Valor total R$ {total.toFixed(2).replace(".", ",")}</p>
         </>
