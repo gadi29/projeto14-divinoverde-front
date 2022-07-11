@@ -19,8 +19,7 @@ function SignIn() {
     setLoad(true);
     
     try {
-      console.log(newRegister)
-      const { status } = await axios.get("http://localhost:5000/sign-in", { ...newRegister, });
+      const { status } = await axios.post("http://localhost:5000/users", { ...newRegister });
 
       if (status === 200) {
         setUserCreate({ ...userCreate, email: newRegister.email });
@@ -29,7 +28,7 @@ function SignIn() {
       }
     } catch (error) {
       setLoad(false);
-      alert(`Erro ${error}`);
+      alert(error);
     };
   }
 
@@ -64,7 +63,7 @@ function SignIn() {
           placeholder="E-mail"
           value={newRegister.email}
           disabled={load}
-          onChange={(e) => setNewRegister({ ...newRegister, email: e.target.value})}
+          onChange={(e) => setNewRegister({ email: e.target.value })}
           required
         />
         <button type="submit">
