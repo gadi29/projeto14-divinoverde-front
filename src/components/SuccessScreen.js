@@ -17,8 +17,8 @@ export default function Success() {
       <ion-icon name="checkmark-circle-outline"></ion-icon>
       <h2>Pedido Realizado com Sucesso</h2>
       <button onClick={() => {
-        clearTimeout(timeoutID);
-        //navigate("/");
+        clearTimeout(timeoutID); //não está funcionando
+        navigate("/");
       }}>Voltar para página inicial</button>
       <span>Redirencionando em {seconds}</span>
     </Container>
