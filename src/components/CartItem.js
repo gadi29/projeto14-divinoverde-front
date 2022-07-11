@@ -12,6 +12,7 @@ export default function CartItem({
   total,
   deleteItem,
 }) {
+  const [load, setLoad] = React.useState(false);
   const { user, setUser } = React.useContext(UserContext);
   const [amount, setAmount] = React.useState(userCartIndex.amount);
   const itemId = userCartIndex._id;
@@ -33,16 +34,19 @@ export default function CartItem({
 
     promise.then(() => {
       console.log("ok");
+      setLoad(false);
     });
   }
 
   function plus() {
+    setLoad(true);
     setAmount(amount + 1);
     value += 1;
     setTotal(total + userCart.find((e) => e._id === itemId).price);
     editAmount();
   }
   function minus() {
+    setLoad(true);
     if (value > 1) {
       setAmount(amount - 1);
       value -= 1;
@@ -56,9 +60,17 @@ export default function CartItem({
       <img src={userCartIndex.image} alt={userCartIndex.title} />
       <h3>{userCartIndex.title}</h3>
       <Midlle>
-        <AiOutlineMinus onClick={() => minus()} />
+        <AiOutlineMinus
+          onClick={() => {
+            load ? <></> : minus();
+          }}
+        />
         <Amount>{amount}</Amount>
-        <AiOutlinePlus onClick={() => plus()} />
+        <AiOutlinePlus
+          onClick={() => {
+            load ? <></> : plus();
+          }}
+        />
       </Midlle>
       <RigthSide>
         <h2>

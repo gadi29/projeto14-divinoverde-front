@@ -58,7 +58,7 @@ export default function ProductPage() {
             <h1>{productData.title} </h1>
             <h2>R$ {productData.price.toFixed(2).replace(".", ",")} </h2>
             <button disabled={loadAdd} onClick={() => addCart(productData._id)}>
-              {loadAdd ? <>Adicionado</> : <>Adicionar tem</>}
+              {loadAdd ? <>Adicionado</> : <>Adicionar item</>}
             </button>
 
             <Description>
