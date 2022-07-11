@@ -22,9 +22,7 @@ export default function ProductPage() {
   }
 
   React.useEffect(() => {
-    const promise = axios.get(
-      `https://divinoverde-back.herokuapp.com/product/${id}`
-    );
+    const promise = axios.get(`http://localhost:5000/product/${id}`);
     promise.then((res) => {
       setProductData(res.data);
       setLoad(false);
@@ -33,11 +31,7 @@ export default function ProductPage() {
 
   function addCart(id) {
     setLoadAdd(true);
-    const promise = axios.post(
-      `https://divinoverde-back.herokuapp.com/cart/${id}`,
-      {},
-      config
-    );
+    const promise = axios.post(`http://localhost:5000/cart/${id}`, {}, config);
     promise.then(() => {
       setAddedItem(true);
 
