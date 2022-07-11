@@ -34,23 +34,19 @@ export default function ProductPage() {
     });
   }, []);
 
-  React.useEffect((() => {
-    if(productData && user) {
-      const promise = axios.get(
-        `https://divinoverde-back.herokuapp.com/cart`,
-        config
-      );
-  
-      promise.then((r) => {
-        const cartUser = r.data.userData;
-        setAlreadyAddInCart((cartUser.filter(product => product._id === productData._id)).length !== 0);
-      });
-    }
-  }), [loadAdd, addedItem])
+  const promise = axios.get(
+    `https://divinoverde-back.herokuapp.com/cart`,
+    config
+  );
+
+  promise.then((r) => {
+    const cartUser = r.data.userData;
+    setAlreadyAddInCart((cartUser.filter(product => product._id === productData._id)).length !== 0);
+  });
 
   function addCart(id) {
     setLoadAdd(true);
-
+    setAlreadyAddInCart(true);
     if(user) {
       const promise = axios.post(
         `https://divinoverde-back.herokuapp.com/cart/${id}`,
@@ -59,7 +55,6 @@ export default function ProductPage() {
       );
       promise.then(() => {
         setAddedItem(true);
-  
         console.log("Adicionado com sucesso");
       });
     } else {
