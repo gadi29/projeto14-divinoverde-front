@@ -18,7 +18,10 @@ export default function Address() {
 
   async function create(event) {
     event.preventDefault();
-    const promise = axios.post("http://localhost:5000/sign-up", userCreate);
+    const promise = axios.post(
+      "https://divinoverde-back.herokuapp.com/sign-up",
+      userCreate
+    );
     promise.then((res) => navigate("/"));
     promise.catch((res) => alert("Houve um erro tente novamente mais tarde"));
   }
@@ -128,7 +131,7 @@ const Form = styled.form`
     padding: 15px;
 
     font-size: 24px;
-    color: #FFFFFF;
+    color: #ffffff;
     font-weight: 600;
 
     &::placeholder {
