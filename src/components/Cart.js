@@ -5,6 +5,7 @@ import styled from "styled-components";
 import CartItem from "./CartItem.js";
 import { TailSpin } from "react-loader-spinner";
 import UserContext from "../context/UserContext.js";
+import TemporaryCart from "../context/temporaryCart.js";
 
 export default function Cart() {
   const [load, setLoad] = React.useState(true);
@@ -12,6 +13,7 @@ export default function Cart() {
   const [total, setTotal] = React.useState(0);
   const navigate = useNavigate();
   const { user, setUser } = React.useContext(UserContext);
+  const { cart, setCart } = React.useContext(TemporaryCart);
   let config = "";
   if (user) {
     config = {
@@ -22,16 +24,21 @@ export default function Cart() {
   }
 
   React.useEffect(() => {
-    const promise = axios.get(
-      `https://divinoverde-back.herokuapp.com/cart`,
-      config
-    );
-    promise.then((res) => {
-      setTotal(res.data.total);
-      setUserCart(res.data.userData);
+    if (user) {
+      const promise = axios.get(
+        `https://divinoverde-back.herokuapp.com/cart`,
+        config
+      );
+      promise.then((res) => {
+        setTotal(res.data.total);
+        setUserCart(res.data.userData);
+        setLoad(false);
+      });
+      promise.catch(() => setLoad(false));
+    } else {
+      setUserCart([...cart]);
       setLoad(false);
-    });
-    promise.catch(() => setLoad(false));
+    }
   }, []);
 
   function loadCartItem() {

@@ -11,26 +11,30 @@ import CheckOut from "./CheckOut.js";
 import Success from "./SuccessScreen.js";
 
 import UserContext from "../context/UserContext";
+import TemporaryCart from "../context/temporaryCart.js";
 
 function App() {
   const [userCreate, setUserCreate] = React.useState();
   const [user, setUser] = React.useState();
+  const [cart, setCart] = React.useState([]);
 
   return (
     <UserContext.Provider value={{ user, setUser, userCreate, setUserCreate }}>
-      <BrowserRouter>
-        <Header />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/sign-in" element={<SignIn />} />
-          <Route path="/sign-up" element={<Signup />} />
-          <Route path="/address" element={<Address />} />
-          <Route path="/product/:id" element={<ProductPage />} />
-          <Route path="/cart" element={<Cart />} />
-          <Route path="/checkout" element={<CheckOut />} />
-          <Route path="/success" element={<Success />} />
-        </Routes>
-      </BrowserRouter>
+      <TemporaryCart.Provider value={{ cart, setCart }}>
+        <BrowserRouter>
+          <Header />
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/sign-in" element={<SignIn />} />
+            <Route path="/sign-up" element={<Signup />} />
+            <Route path="/address" element={<Address />} />
+            <Route path="/product/:id" element={<ProductPage />} />
+            <Route path="/cart" element={<Cart />} />
+            <Route path="/checkout" element={<CheckOut />} />
+            <Route path="/success" element={<Success />} />
+          </Routes>
+        </BrowserRouter>
+      </TemporaryCart.Provider>
     </UserContext.Provider>
   );
 }
