@@ -521,5 +521,6 @@ const Bottom = styled.div`
     cursor: pointer;
 
     margin-top: 8px;
+    margin-bottom: 30px;
   }
 `;

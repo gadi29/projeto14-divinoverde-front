@@ -134,6 +134,7 @@ const Container = styled.div`
 `;
 const Description = styled.div`
   margin: 30px;
+  padding: 30px;
   text-align: justify;
   width: 375px;
 

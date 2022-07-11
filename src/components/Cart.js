@@ -118,7 +118,6 @@ export default function Cart() {
 }
 const Container = styled.div`
   width: 100vw;
-  height: 90vh;
   display: flex;
 
   align-items: center;
@@ -155,6 +154,7 @@ const Container = styled.div`
     font-size: 16px;
     font-weight: 700;
     color: #000;
+    margin-bottom: 30px;
     &:hover {
       cursor: pointer;
       filter: brightness(130%);
