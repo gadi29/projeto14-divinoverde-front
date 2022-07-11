@@ -2,7 +2,7 @@ import axios from "axios";
 import React from "react";
 import styled from "styled-components";
 import { TailSpin, ThreeDots } from "react-loader-spinner";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import UserContext from "../context/UserContext.js";
 import TemporaryCart from "../context/temporaryCart.js";
 
@@ -24,6 +24,8 @@ export default function ProductPage() {
     };
   }
 
+  const navigate = useNavigate();
+
   React.useEffect(() => {
     const promise = axios.get(
       `https://divinoverde-back.herokuapp.com/product/${id}`
@@ -35,9 +37,7 @@ export default function ProductPage() {
   }, []);
 
   React.useEffect((() => {
-    if(productData && !user) {
-      setAlreadyAddInCart((cart.filter(product => product._id === productData._id)).length !== 0);
-    } else if(productData && user) {
+    if(productData && user) {
       const promise = axios.get(
         `https://divinoverde-back.herokuapp.com/cart`,
         config
@@ -48,7 +48,7 @@ export default function ProductPage() {
         setAlreadyAddInCart((cartUser.filter(product => product._id === productData._id)).length !== 0);
       });
     }
-  }), [loadAdd, productData])
+  }), [loadAdd, addedItem])
 
   function addCart(id) {
     setLoadAdd(true);
@@ -65,8 +65,8 @@ export default function ProductPage() {
         console.log("Adicionado com sucesso");
       });
     } else {
-      setCart([...cart, productData]);
-      setAddedItem(true);
+      alert("Você precisa estar logado para adicionar um item ao carrinho!");
+      navigate('/sign-in');
     }
   }
 

@@ -66,14 +66,20 @@ export default function Cart() {
   return (
     <>
       {load ? (
-        <Container user={user} userCart={userCart}>
+        <Container>
           <TailSpin />
         </Container>
       ) : (
-        <Container>
+        <Container cart={cart} userCart={userCart}>
           <h1>Carrinho</h1>
           {loadCartItem()}
-          <button disabled={!user || !userCart} onClick={() => navigate("/checkout")}>Fechar compra</button>
+          <button disabled={load} onClick={() => {
+            if (!user) {
+              navigate("/sign-in");
+            } else if (userCart.length > 0) {
+              navigate("/checkout");
+            }
+          }}>Fechar compra</button>
 
           <Link to="/">Continuar comprando</Link>
         </Container>
@@ -104,15 +110,15 @@ const Container = styled.div`
     border: none;
     width: 170px;
     height: 35px;
-    background-color: ${({ user, userCart }) => (user && userCart) ? "#e99baf" : "#A7A7A7"};
+    background-color: ${({ cart, userCart }) => (cart || userCart) ? "#e99baf" : "#A7A7A7"};
     color: #fff;
     border-radius: 5px;
     font-size: 20px;
     margin: 10px;
     font-weight: 700;
     &:hover {
-      cursor: ${({ user, userCart }) => (user && userCart) ? "pointer" : "initial"};
-      filter: ${({ user, userCart }) => (user && userCart) ? "brightness(130%)" : "initial"};
+      cursor: ${({ cart, userCart }) => (cart || userCart) ? "pointer" : "initial"};
+      filter: ${({ cart, userCart }) => (cart || userCart) ? "brightness(130%)" : "initial"};
     }
   }
   a {

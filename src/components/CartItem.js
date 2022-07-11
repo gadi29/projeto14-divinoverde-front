@@ -42,26 +42,21 @@ export default function CartItem({
 
   function deleteItem(id) {
     setLoad(true);
-    if (user) {
-      const promise = axios.delete(
-        `https://divinoverde-back.herokuapp.com/deleteitem/${id}`,
-        config
+    const promise = axios.delete(
+      `https://divinoverde-back.herokuapp.com/deleteitem/${id}`,
+      config
+    );
+    promise.then((res) => {
+      const novoCart = userCart.filter((e) => e._id !== id);
+      setUserCart(novoCart);
+      setTotal(
+        total -
+          userCart.find((e) => e._id === id).price *
+            userCart.find((e) => e._id === id).amount
       );
-      promise.then((res) => {
-        const novoCart = userCart.filter((e) => e._id !== id);
-        setUserCart(novoCart);
-        setTotal(
-          total -
-            userCart.find((e) => e._id === id).price *
-              userCart.find((e) => e._id === id).amount
-        );
-        setLoad(false);
-      });
-      return;
-    } else {
-      setCart(cart.filter((product) => product._id !== id));
       setLoad(false);
-    }
+    });
+    return;
   }
   function plus() {
     setAmount(amount + 1);
