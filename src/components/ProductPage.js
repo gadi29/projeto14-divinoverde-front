@@ -14,7 +14,7 @@ export default function ProductPage() {
   const { id } = useParams();
   const { user, setUser } = React.useContext(UserContext);
   const { cart, setCart } = React.useContext(TemporaryCart);
-  let alreadyAddInCart;
+  const [alreadyAddInCart, setAlreadyAddInCart] = React.useState(false);
   let config = "";
   if (user) {
     config = {
@@ -22,19 +22,6 @@ export default function ProductPage() {
         Authorization: `Bearer ${user.token}`,
       },
     };
-  }
-  if(productData && !user) {
-    alreadyAddInCart = ((cart.filter(product => product._id === productData._id)).length !== 0);
-  } else if(productData && user) {
-    const promise = axios.get(
-      `https://divinoverde-back.herokuapp.com/cart`,
-      config
-    );
-
-    promise.then((r) => {
-      const cartUser = r.data.userData;
-      alreadyAddInCart = ((cartUser.filter(product => product._id === productData._id)).length !== 0);
-    })
   }
 
   React.useEffect(() => {
@@ -46,6 +33,22 @@ export default function ProductPage() {
       setLoad(false);
     });
   }, []);
+
+  React.useEffect((() => {
+    if(productData && !user) {
+      setAlreadyAddInCart((cart.filter(product => product._id === productData._id)).length !== 0);
+    } else if(productData && user) {
+      const promise = axios.get(
+        `https://divinoverde-back.herokuapp.com/cart`,
+        config
+      );
+  
+      promise.then((r) => {
+        const cartUser = r.data.userData;
+        setAlreadyAddInCart((cartUser.filter(product => product._id === productData._id)).length !== 0);
+      });
+    }
+  }), [loadAdd, productData])
 
   function addCart(id) {
     setLoadAdd(true);

@@ -39,7 +39,7 @@ export default function Cart() {
       setUserCart([...cart]);
       setLoad(false);
     }
-  }, []);
+  }, [cart]);
 
   function loadCartItem() {
     if (userCart) {

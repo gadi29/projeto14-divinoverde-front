@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { BsTrash } from "react-icons/bs";
 import UserContext from "../context/UserContext.js";
+import TemporaryCart from "../context/temporaryCart.js";
 import axios from "axios";
 import { AiOutlineMinus, AiOutlinePlus } from "react-icons/ai";
 import { TailSpin } from "react-loader-spinner";
@@ -14,6 +15,7 @@ export default function CartItem({
   total,
 }) {
   const { user, setUser } = React.useContext(UserContext);
+  const {cart, setCart} = React.useContext(TemporaryCart);
   const [load, setLoad] = React.useState(false);
   const [amount, setAmount] = React.useState(userCartIndex.amount);
   const itemId = userCartIndex._id;
@@ -40,21 +42,26 @@ export default function CartItem({
 
   function deleteItem(id) {
     setLoad(true);
-    const promise = axios.delete(
-      `https://divinoverde-back.herokuapp.com/deleteitem/${id}`,
-      config
-    );
-    promise.then((res) => {
-      const novoCart = userCart.filter((e) => e._id !== id);
-      setUserCart(novoCart);
-      setTotal(
-        total -
-          userCart.find((e) => e._id === id).price *
-            userCart.find((e) => e._id === id).amount
+    if (user) {
+      const promise = axios.delete(
+        `https://divinoverde-back.herokuapp.com/deleteitem/${id}`,
+        config
       );
+      promise.then((res) => {
+        const novoCart = userCart.filter((e) => e._id !== id);
+        setUserCart(novoCart);
+        setTotal(
+          total -
+            userCart.find((e) => e._id === id).price *
+              userCart.find((e) => e._id === id).amount
+        );
+        setLoad(false);
+      });
+      return;
+    } else {
+      setCart(cart.filter((product) => product._id !== id));
       setLoad(false);
-    });
-    return;
+    }
   }
   function plus() {
     setAmount(amount + 1);
@@ -76,9 +83,9 @@ export default function CartItem({
       <img src={userCartIndex.image} alt={userCartIndex.title} />
       <h3>{userCartIndex.title}</h3>
       <Midlle>
-        <AiOutlineMinus onClick={() => minus()} />
+        <AiOutlineMinus className="icon" onClick={() => minus()} />
         <Amount>{amount}</Amount>
-        <AiOutlinePlus onClick={() => plus()} />
+        <AiOutlinePlus className="icon" onClick={() => plus()} />
       </Midlle>
       <RigthSide>
         <h2>
@@ -88,7 +95,7 @@ export default function CartItem({
         {load ? (
           <TailSpin height={20} />
         ) : (
-          <BsTrash onClick={(e) => deleteItem(userCartIndex._id)} />
+          <BsTrash className="trash" onClick={(e) => deleteItem(userCartIndex._id)} />
         )}
       </RigthSide>
     </Container>
@@ -121,6 +128,10 @@ const Container = styled.div`
 const RigthSide = styled.div`
   display: flex;
   align-items: center;
+
+  .trash {
+    cursor: pointer;
+  }
 `;
 const Load = styled.div`
   height: 50px;
@@ -142,4 +153,8 @@ const Midlle = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+
+  .icon {
+    cursor: pointer;
+  }
 `;
