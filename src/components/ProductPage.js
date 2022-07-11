@@ -34,7 +34,7 @@ export default function ProductPage() {
     const promise = axios.post(`http://localhost:5000/cart/${id}`, {}, config);
     promise.then(() => {
       setAddedItem(true);
-      setLoadAdd(false);
+
       console.log("Adiconado com sucesso");
     });
   }
@@ -52,15 +52,9 @@ export default function ProductPage() {
             <h1>{productData.title} </h1>
             <h2>R$ {productData.price.toFixed(2).replace(".", ",")} </h2>
             <button disabled={loadAdd} onClick={() => addCart(productData._id)}>
-              {loadAdd ? (
-                <>
-                  <ThreeDots color="#fff" />
-                </>
-              ) : (
-                <>Adicionar tem</>
-              )}
+              {loadAdd ? <>Adicionado</> : <>Adicionar tem</>}
             </button>
-            {addedItem ? <p>Item adicionado no carrinho</p> : <></>}
+
             <Description>
               <h3>Descrição</h3>
               <p>{productData.description} </p>
