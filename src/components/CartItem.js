@@ -14,6 +14,8 @@ export default function CartItem({
 }) {
   const [load, setLoad] = React.useState(false);
   const { user, setUser } = React.useContext(UserContext);
+
+  const [load, setLoad] = React.useState(false);
   const [amount, setAmount] = React.useState(userCartIndex.amount);
   const itemId = userCartIndex._id;
   let value = amount;
@@ -71,6 +73,7 @@ export default function CartItem({
             load ? <></> : plus();
           }}
         />
+
       </Midlle>
       <RigthSide>
         <h2>
@@ -93,6 +96,8 @@ const Container = styled.div`
   align-items: center;
   justify-content: space-between;
   img {
+    border-radius: 5px;
+    object-fit: cover;
     height: 65px;
     width: 65px;
     margin: 10px;
@@ -107,6 +112,10 @@ const Container = styled.div`
 const RigthSide = styled.div`
   display: flex;
   align-items: center;
+
+  .trash {
+    cursor: pointer;
+  }
 `;
 const Load = styled.div`
   height: 50px;
@@ -128,4 +137,8 @@ const Midlle = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+
+  .icon {
+    cursor: pointer;
+  }
 `;

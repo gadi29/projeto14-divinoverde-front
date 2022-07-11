@@ -23,6 +23,17 @@ export default function Cart() {
   }
 
   React.useEffect(() => {
+    const promise = axios.get(
+      `https://divinoverde-back.herokuapp.com/cart`,
+      config
+    );
+    promise.then((res) => {
+      setTotal(res.data.total);
+      setUserCart(res.data.userData);
+      setLoad(false);
+    });
+    promise.catch(() => setLoad(false));
+
     loadPage();
   }, []);
 
@@ -58,6 +69,7 @@ export default function Cart() {
     });
     promise.catch(() => setLoad(false));
   }
+
   function loadCartItem() {
     if (userCart) {
       return (
@@ -84,20 +96,20 @@ export default function Cart() {
   return (
     <>
       {load ? (
-        <Container user={user} userCart={userCart}>
+        <Container>
           <TailSpin />
         </Container>
       ) : (
-        <Container>
+        <Container userCart={userCart.length > 0}>
           <h1>Carrinho</h1>
-
-          {loadItem ? <TailSpin /> : loadCartItem()}
-         
-
-      
-          <button disabled={!user || !userCart} onClick={() => navigate("/checkout")}>Fechar compra</button>
-
-
+          {loadItem ? <TailSpin /> : loadCartItem()}      
+          <button disabled={!user || !userCart} onClick={() => {
+            if (!user) {
+              navigate("/sign-in");
+            } else if (userCart.length > 0) {
+              navigate("/checkout");
+            }
+          }}>Fechar compra</button>
           <Link to="/">Continuar comprando</Link>
         </Container>
       )}
@@ -127,15 +139,15 @@ const Container = styled.div`
     border: none;
     width: 170px;
     height: 35px;
-    background-color: ${({ user, userCart }) => (user && userCart) ? "#e99baf" : "#A7A7A7"};
+    background-color: ${({ userCart }) => (userCart) ? "#e99baf" : "#A7A7A7"};
     color: #fff;
     border-radius: 5px;
     font-size: 20px;
     margin: 10px;
     font-weight: 700;
     &:hover {
-      cursor: ${({ user, userCart }) => (user && userCart) ? "pointer" : "initial"};
-      filter: ${({ user, userCart }) => (user && userCart) ? "brightness(130%)" : "initial"};
+      cursor: ${({ userCart }) => ( userCart) ? "pointer" : "initial"};
+      filter: ${({ userCart }) => ( userCart) ? "brightness(130%)" : "initial"};
     }
   }
   a {

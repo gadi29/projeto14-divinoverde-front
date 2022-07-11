@@ -18,19 +18,19 @@ function App() {
 
   return (
     <UserContext.Provider value={{ user, setUser, userCreate, setUserCreate }}>
-      <BrowserRouter>
-        <Header />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/sign-in" element={<SignIn />} />
-          <Route path="/sign-up" element={<Signup />} />
-          <Route path="/address" element={<Address />} />
-          <Route path="/product/:id" element={<ProductPage />} />
-          <Route path="/cart" element={<Cart />} />
-          <Route path="/checkout" element={<CheckOut />} />
-          <Route path="/success" element={<Success />} />
-        </Routes>
-      </BrowserRouter>
+        <BrowserRouter>
+          <Header />
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/sign-in" element={<SignIn />} />
+            <Route path="/sign-up" element={<Signup />} />
+            <Route path="/address" element={<Address />} />
+            <Route path="/product/:id" element={<ProductPage />} />
+            <Route path="/cart" element={<Cart />} />
+            <Route path="/checkout" element={<CheckOut />} />
+            <Route path="/success" element={<Success />} />
+          </Routes>
+        </BrowserRouter>
     </UserContext.Provider>
   );
 }

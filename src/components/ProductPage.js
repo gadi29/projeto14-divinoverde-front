@@ -2,7 +2,7 @@ import axios from "axios";
 import React from "react";
 import styled from "styled-components";
 import { TailSpin, ThreeDots } from "react-loader-spinner";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import UserContext from "../context/UserContext.js";
 
 export default function ProductPage() {
@@ -12,6 +12,7 @@ export default function ProductPage() {
   const [addedItem, setAddedItem] = React.useState(false);
   const { id } = useParams();
   const { user, setUser } = React.useContext(UserContext);
+  const [alreadyAddInCart, setAlreadyAddInCart] = React.useState(false);
   let config = "";
   if (user) {
     config = {
@@ -20,6 +21,8 @@ export default function ProductPage() {
       },
     };
   }
+
+  const navigate = useNavigate();
 
   React.useEffect(() => {
     const promise = axios.get(
@@ -31,18 +34,33 @@ export default function ProductPage() {
     });
   }, []);
 
+  const promise = axios.get(
+    `https://divinoverde-back.herokuapp.com/cart`,
+    config
+  );
+
+  promise.then((r) => {
+    const cartUser = r.data.userData;
+    setAlreadyAddInCart((cartUser.filter(product => product._id === productData._id)).length !== 0);
+  });
+
   function addCart(id) {
     setLoadAdd(true);
-    const promise = axios.post(
-      `https://divinoverde-back.herokuapp.com/cart/${id}`,
-      {},
-      config
-    );
-    promise.then(() => {
-      setAddedItem(true);
-
-      console.log("Adiconado com sucesso");
-    });
+    setAlreadyAddInCart(true);
+    if(user) {
+      const promise = axios.post(
+        `https://divinoverde-back.herokuapp.com/cart/${id}`,
+        {},
+        config
+      );
+      promise.then(() => {
+        setAddedItem(true);
+        console.log("Adicionado com sucesso");
+      });
+    } else {
+      alert("Você precisa estar logado para adicionar um item ao carrinho!");
+      navigate('/sign-in');
+    }
   }
 
   return (
@@ -53,12 +71,14 @@ export default function ProductPage() {
         </Container>
       ) : (
         <>
-          <Container>
+          <Container alreadyAddInCart={alreadyAddInCart}>
             <img src={productData.image} alt={productData.title} />
             <h1>{productData.title} </h1>
             <h2>R$ {productData.price.toFixed(2).replace(".", ",")} </h2>
-            <button disabled={loadAdd} onClick={() => addCart(productData._id)}>
-              {loadAdd ? <>Adicionado</> : <>Adicionar item</>}
+
+            <button disabled={alreadyAddInCart} onClick={() => addCart(productData._id)}>
+              {alreadyAddInCart ? "Adicionado" : "Adicionar item"}
+
             </button>
 
             <Description>
@@ -107,8 +127,8 @@ const Container = styled.div`
     justify-content: center;
     align-items: center;
     &:hover {
-      cursor: pointer;
-      filter: brightness(130%);
+      cursor: ${({ alreadyAddInCart }) => alreadyAddInCart ? "initial" : "pointer"};
+      filter: ${({ alreadyAddInCart }) => alreadyAddInCart ? "initial" : "brightness(130%)"};
     }
   }
 `;
