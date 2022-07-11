@@ -14,8 +14,6 @@ export default function CartItem({
 }) {
   const [load, setLoad] = React.useState(false);
   const { user, setUser } = React.useContext(UserContext);
-
-  const [load, setLoad] = React.useState(false);
   const [amount, setAmount] = React.useState(userCartIndex.amount);
   const itemId = userCartIndex._id;
   let value = amount;
