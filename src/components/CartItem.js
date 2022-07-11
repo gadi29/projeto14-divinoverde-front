@@ -105,6 +105,8 @@ const Container = styled.div`
   align-items: center;
   justify-content: space-between;
   img {
+    border-radius: 5px;
+    object-fit: cover;
     height: 65px;
     width: 65px;
     margin: 10px;

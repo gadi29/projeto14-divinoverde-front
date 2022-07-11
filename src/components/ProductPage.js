@@ -23,8 +23,18 @@ export default function ProductPage() {
       },
     };
   }
-  if(productData) {
+  if(productData && !user) {
     alreadyAddInCart = ((cart.filter(product => product._id === productData._id)).length !== 0);
+  } else if(productData && user) {
+    const promise = axios.get(
+      `https://divinoverde-back.herokuapp.com/cart`,
+      config
+    );
+
+    promise.then((r) => {
+      const cartUser = r.data.userData;
+      alreadyAddInCart = ((cartUser.filter(product => product._id === productData._id)).length !== 0);
+    })
   }
 
   React.useEffect(() => {

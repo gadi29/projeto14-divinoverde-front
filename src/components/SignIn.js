@@ -19,9 +19,8 @@ function SignIn() {
     setLoad(true);
 
     try {
-      console.log(newRegister);
       const { status } = await axios.get(
-        "https://divinoverde-back.herokuapp.com/sign-in",
+        "https://divinoverde-back.herokuapp.com/users",
         { ...newRegister }
       );
 
