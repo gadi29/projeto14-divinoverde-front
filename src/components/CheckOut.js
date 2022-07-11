@@ -86,6 +86,18 @@ export default function CheckOut() {
     setShowAddress(false);
   }
 
+  function finishOrder() {
+    const order = {
+      ...userCart,
+    };
+    const promise = axios.post(
+      "https://divinoverde-back.herokuapp.com/finish",
+      order,
+      config
+    );
+    promise.then(() => navigate("/success"));
+  }
+
   return (
     <Container>
       <Top showPayment={showPayment} showAddress={showAddress}>
@@ -247,7 +259,7 @@ export default function CheckOut() {
       <Bottom address={blockEdit.address} payment={blockEdit.payment}>
         <button
           disabled={!(blockEdit.address && blockEdit.payment)}
-          onClick={() => navigate("/success")}
+          onClick={() => finishOrder()}
         >
           Fechar Compra
         </button>

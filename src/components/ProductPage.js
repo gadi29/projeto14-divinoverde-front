@@ -75,8 +75,10 @@ export default function ProductPage() {
             <img src={productData.image} alt={productData.title} />
             <h1>{productData.title} </h1>
             <h2>R$ {productData.price.toFixed(2).replace(".", ",")} </h2>
+
             <button disabled={alreadyAddInCart} onClick={() => addCart(productData._id)}>
               {alreadyAddInCart ? "Adicionado" : "Adicionar item"}
+
             </button>
 
             <Description>
