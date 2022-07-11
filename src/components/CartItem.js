@@ -28,7 +28,7 @@ export default function CartItem({
   }
   function editAmount() {
     const promise = axios.post(
-      "https://divinoverde-back.herokuapp.com/cartedit",
+      "http://localhost:5000/cartedit",
       { value, itemId },
       config
     );
@@ -41,7 +41,7 @@ export default function CartItem({
   function deleteItem(id) {
     setLoad(true);
     const promise = axios.delete(
-      `https://divinoverde-back.herokuapp.com/deleteitem/${id}`,
+      `http://localhost:5000/deleteitem/${id}`,
       config
     );
     promise.then((res) => {
