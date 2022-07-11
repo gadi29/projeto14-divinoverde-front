@@ -5,7 +5,6 @@ import styled from "styled-components";
 import CartItem from "./CartItem.js";
 import { TailSpin } from "react-loader-spinner";
 import UserContext from "../context/UserContext.js";
-import TemporaryCart from "../context/temporaryCart.js";
 
 export default function Cart() {
   const [load, setLoad] = React.useState(true);
@@ -14,7 +13,6 @@ export default function Cart() {
   const [total, setTotal] = React.useState(0);
   const navigate = useNavigate();
   const { user, setUser } = React.useContext(UserContext);
-  const { cart, setCart } = React.useContext(TemporaryCart);
   let config = "";
   if (user) {
     config = {
@@ -25,22 +23,17 @@ export default function Cart() {
   }
 
   React.useEffect(() => {
-
-    if (user) {
-      const promise = axios.get(
-        `https://divinoverde-back.herokuapp.com/cart`,
-        config
-      );
-      promise.then((res) => {
-        setTotal(res.data.total);
-        setUserCart(res.data.userData);
-        setLoad(false);
-      });
-      promise.catch(() => setLoad(false));
-    } else {
-      setUserCart([...cart]);
+    const promise = axios.get(
+      `https://divinoverde-back.herokuapp.com/cart`,
+      config
+    );
+    promise.then((res) => {
+      setTotal(res.data.total);
+      setUserCart(res.data.userData);
       setLoad(false);
-    }
+    });
+    promise.catch(() => setLoad(false));
+    
     loadPage();
   }, []);
 
@@ -107,7 +100,7 @@ export default function Cart() {
           <TailSpin />
         </Container>
       ) : (
-        <Container cart={cart} userCart={userCart}>
+        <Container userCart={userCart}>
           <h1>Carrinho</h1>
           {loadItem ? <TailSpin /> : loadCartItem()}      
           <button disabled={!user || !userCart} onClick={() => {
@@ -146,15 +139,15 @@ const Container = styled.div`
     border: none;
     width: 170px;
     height: 35px;
-    background-color: ${({ cart, userCart }) => (cart || userCart) ? "#e99baf" : "#A7A7A7"};
+    background-color: ${({ userCart }) => (userCart) ? "#e99baf" : "#A7A7A7"};
     color: #fff;
     border-radius: 5px;
     font-size: 20px;
     margin: 10px;
     font-weight: 700;
     &:hover {
-      cursor: ${({ cart, userCart }) => (cart || userCart) ? "pointer" : "initial"};
-      filter: ${({ cart, userCart }) => (cart || userCart) ? "brightness(130%)" : "initial"};
+      cursor: ${({ userCart }) => ( userCart) ? "pointer" : "initial"};
+      filter: ${({ userCart }) => ( userCart) ? "brightness(130%)" : "initial"};
     }
   }
   a {

@@ -11,16 +11,13 @@ import CheckOut from "./CheckOut.js";
 import Success from "./SuccessScreen.js";
 
 import UserContext from "../context/UserContext";
-import TemporaryCart from "../context/temporaryCart.js";
 
 function App() {
   const [userCreate, setUserCreate] = React.useState();
   const [user, setUser] = React.useState();
-  const [cart, setCart] = React.useState([]);
 
   return (
     <UserContext.Provider value={{ user, setUser, userCreate, setUserCreate }}>
-      <TemporaryCart.Provider value={{ cart, setCart }}>
         <BrowserRouter>
           <Header />
           <Routes>
@@ -34,7 +31,6 @@ function App() {
             <Route path="/success" element={<Success />} />
           </Routes>
         </BrowserRouter>
-      </TemporaryCart.Provider>
     </UserContext.Provider>
   );
 }

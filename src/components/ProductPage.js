@@ -4,7 +4,6 @@ import styled from "styled-components";
 import { TailSpin, ThreeDots } from "react-loader-spinner";
 import { useNavigate, useParams } from "react-router-dom";
 import UserContext from "../context/UserContext.js";
-import TemporaryCart from "../context/temporaryCart.js";
 
 export default function ProductPage() {
   const [load, setLoad] = React.useState(true);
@@ -13,7 +12,6 @@ export default function ProductPage() {
   const [addedItem, setAddedItem] = React.useState(false);
   const { id } = useParams();
   const { user, setUser } = React.useContext(UserContext);
-  const { cart, setCart } = React.useContext(TemporaryCart);
   const [alreadyAddInCart, setAlreadyAddInCart] = React.useState(false);
   let config = "";
   if (user) {

@@ -2,7 +2,6 @@ import React from "react";
 import styled from "styled-components";
 import { BsTrash } from "react-icons/bs";
 import UserContext from "../context/UserContext.js";
-import TemporaryCart from "../context/temporaryCart.js";
 import axios from "axios";
 import { AiOutlineMinus, AiOutlinePlus } from "react-icons/ai";
 
