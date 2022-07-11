@@ -9,6 +9,7 @@ import TemporaryCart from "../context/temporaryCart.js";
 
 export default function Cart() {
   const [load, setLoad] = React.useState(true);
+  const [loadItem, setLoadItem] = React.useState(false);
   const [userCart, setUserCart] = React.useState("");
   const [total, setTotal] = React.useState(0);
   const navigate = useNavigate();
@@ -24,6 +25,7 @@ export default function Cart() {
   }
 
   React.useEffect(() => {
+
     if (user) {
       const promise = axios.get(
         `https://divinoverde-back.herokuapp.com/cart`,
@@ -39,7 +41,41 @@ export default function Cart() {
       setUserCart([...cart]);
       setLoad(false);
     }
-  }, [cart]);
+    loadPage();
+  }, []);
+
+  function deleteItem(id) {
+    setLoadItem(true);
+    const promise = axios.delete(
+      `https://divinoverde-back.herokuapp.com/deleteitem/${id}`,
+      config
+    );
+    promise.then((res) => {
+      const novoCart = axios.get(
+        `https://divinoverde-back.herokuapp.com/cart`,
+        config
+      );
+      novoCart.then((res) => {
+        setUserCart(res.data.userData);
+        setTotal(res.data.total);
+        setLoadItem(false);
+      });
+    });
+    return;
+  }
+
+  function loadPage() {
+    const promise = axios.get(
+      `https://divinoverde-back.herokuapp.com/cart`,
+      config
+    );
+    promise.then((res) => {
+      setTotal(res.data.total);
+      setUserCart(res.data.userData);
+      setLoad(false);
+    });
+    promise.catch(() => setLoad(false));
+  }
 
   function loadCartItem() {
     if (userCart) {
@@ -47,12 +83,13 @@ export default function Cart() {
         <>
           {userCart.map((e, index) => (
             <CartItem
-              userCartIndex={userCart[index]}
-              key={index}
+              userCartIndex={e}
               userCart={userCart}
               setUserCart={setUserCart}
               setTotal={setTotal}
               total={total}
+              deleteItem={deleteItem}
+              key={index}
             />
           ))}
           <p>Valor total R$ {total.toFixed(2).replace(".", ",")}</p>
@@ -72,15 +109,14 @@ export default function Cart() {
       ) : (
         <Container cart={cart} userCart={userCart}>
           <h1>Carrinho</h1>
-          {loadCartItem()}
-          <button disabled={load} onClick={() => {
+          {loadItem ? <TailSpin /> : loadCartItem()}      
+          <button disabled={!user || !userCart} onClick={() => {
             if (!user) {
               navigate("/sign-in");
             } else if (userCart.length > 0) {
               navigate("/checkout");
             }
           }}>Fechar compra</button>
-
           <Link to="/">Continuar comprando</Link>
         </Container>
       )}

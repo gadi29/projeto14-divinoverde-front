@@ -5,17 +5,16 @@ import UserContext from "../context/UserContext.js";
 import TemporaryCart from "../context/temporaryCart.js";
 import axios from "axios";
 import { AiOutlineMinus, AiOutlinePlus } from "react-icons/ai";
-import { TailSpin } from "react-loader-spinner";
 
 export default function CartItem({
   userCartIndex,
   userCart,
-  setUserCart,
   setTotal,
   total,
+  deleteItem,
 }) {
   const { user, setUser } = React.useContext(UserContext);
-  const {cart, setCart} = React.useContext(TemporaryCart);
+
   const [load, setLoad] = React.useState(false);
   const [amount, setAmount] = React.useState(userCartIndex.amount);
   const itemId = userCartIndex._id;
@@ -40,24 +39,6 @@ export default function CartItem({
     });
   }
 
-  function deleteItem(id) {
-    setLoad(true);
-    const promise = axios.delete(
-      `https://divinoverde-back.herokuapp.com/deleteitem/${id}`,
-      config
-    );
-    promise.then((res) => {
-      const novoCart = userCart.filter((e) => e._id !== id);
-      setUserCart(novoCart);
-      setTotal(
-        total -
-          userCart.find((e) => e._id === id).price *
-            userCart.find((e) => e._id === id).amount
-      );
-      setLoad(false);
-    });
-    return;
-  }
   function plus() {
     setAmount(amount + 1);
     value += 1;
@@ -65,7 +46,7 @@ export default function CartItem({
     editAmount();
   }
   function minus() {
-    if (amount > 1) {
+    if (value > 1) {
       setAmount(amount - 1);
       value -= 1;
       setTotal(total - userCart.find((e) => e._id === itemId).price);
@@ -87,11 +68,7 @@ export default function CartItem({
           R$
           {userCartIndex.price.toFixed(2).replace(".", ",")}
         </h2>
-        {load ? (
-          <TailSpin height={20} />
-        ) : (
-          <BsTrash className="trash" onClick={(e) => deleteItem(userCartIndex._id)} />
-        )}
+        <BsTrash onClick={(e) => deleteItem(userCartIndex._id)} />
       </RigthSide>
     </Container>
   );
