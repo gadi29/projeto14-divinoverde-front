@@ -1,6 +1,6 @@
 import axios from "axios";
 import React from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import CartItem from "./CartItem.js";
 import { TailSpin } from "react-loader-spinner";
@@ -9,8 +9,8 @@ import UserContext from "../context/UserContext.js";
 export default function Cart() {
   const [load, setLoad] = React.useState(true);
   const [userCart, setUserCart] = React.useState("");
-  const { userId } = useParams();
   const [total, setTotal] = React.useState(0);
+  const navigate = useNavigate();
   const { user, setUser } = React.useContext(UserContext);
   let config = "";
   if (user) {
@@ -63,7 +63,7 @@ export default function Cart() {
         <Container>
           <h1>Carrinho</h1>
           {loadCartItem()}
-          <button>Fechar compra</button>
+          <button onClick={() => navigate("/checkout")}>Fechar compra</button>
 
           <Link to="/">Continuar comprando</Link>
         </Container>
