@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 export default function CheckOut () {
@@ -6,7 +7,24 @@ export default function CheckOut () {
   const [address, setAddress] = useState({ street:"", number:"", district:"", city:"", stateUF:"" })
   const [showPayment, setShowPayment] = useState(false);
   const [showAddress, setShowAddress] = useState(false);
+  const [blockEdit, setBlockEdit] = useState({ address: false, payment:false });
 
+  const navigate = useNavigate();
+
+  function paymentBlock(e) {
+    e.preventDefault();
+
+    setBlockEdit({ ...blockEdit, payment:true });
+    setShowAddress(true);
+    setShowPayment(false);
+  }
+
+  function addressBlock(e) {
+    e.preventDefault();
+
+    setBlockEdit({ ...blockEdit, address:true });
+    setShowAddress(false);
+  }
 
   return (
     <Container>
@@ -19,13 +37,14 @@ export default function CheckOut () {
           setShowPayment(!showPayment);
           }}>Pagamento</h3>
         <Payment showPayment={showPayment}>
-          <form>
+          <form onSubmit={paymentBlock}>
             <OneInputLine>
               <label htmlFor="name">Nome: </label>
               <input
                 type="text"
                 id="name"
                 value={payment.name}
+                disabled={blockEdit.payment}
                 onChange={(e) =>
                   setPayment({ ...payment, name: e.target.value })
                 }
@@ -42,12 +61,17 @@ export default function CheckOut () {
                 autoComplete="cc-number"
                 placeholder="xxxx xxxx xxxx xxxx"
                 value={payment.cardNum}
+                disabled={blockEdit.payment}
                 onChange={(e) =>
                   setPayment({ ...payment, cardNum: e.target.value })
                 }
                 required
               />
             </OneInputLine>
+            <PaymentButtons payment={blockEdit.payment}>
+              <button disabled={!blockEdit.payment} onClick={() => setBlockEdit({ ...blockEdit, payment:false})}>Editar</button>
+              <button disabled={blockEdit.payment} type="submit">Confirmar</button>
+            </PaymentButtons>
           </form>
         </Payment>
         <h3 onClick={() => {
@@ -55,13 +79,14 @@ export default function CheckOut () {
           setShowAddress(!showAddress);
           }}>Endereço</h3>
         <Address showAddress={showAddress}>
-          <form>
+          <form onSubmit={addressBlock}>
             <TwoInputsLine>
               <label htmlFor="street">Rua: </label>
               <input
                 type="text"
                 id="street"
                 value={address.street}
+                disabled={blockEdit.address}
                 onChange={(e) =>
                   setAddress({ ...address, street: e.target.value })
                 }
@@ -72,6 +97,7 @@ export default function CheckOut () {
                 type="number"
                 id="number"
                 value={address.number}
+                disabled={blockEdit.address}
                 onChange={(e) =>
                   setAddress({ ...address, number: e.target.value })
                 }
@@ -84,6 +110,7 @@ export default function CheckOut () {
                 type="text"
                 id="district"
                 value={address.district}
+                disabled={blockEdit.address}
                 onChange={(e) =>
                   setAddress({ ...address, district: e.target.value })
                 }
@@ -96,6 +123,7 @@ export default function CheckOut () {
                 type="text"
                 id="city"
                 value={address.city}
+                disabled={blockEdit.address}
                 onChange={(e) =>
                   setAddress({ ...address, city: e.target.value })
                 }
@@ -106,18 +134,23 @@ export default function CheckOut () {
                 type="text"
                 id="state"
                 value={address.stateUF}
+                disabled={blockEdit.address}
                 onChange={(e) =>
                   setAddress({ ...address, stateUF: e.target.value })
                 }
                 required
               />
             </TwoInputsLine>
+            <AddressButtons address={blockEdit.address}>
+              <button disabled={!blockEdit.address} onClick={() => setBlockEdit({ ...blockEdit, address:false})}>Editar</button>
+              <button disabled={blockEdit.address} type="submit">Confirmar</button>
+            </AddressButtons>
           </form>
         </Address>
       </Top>
-      <Bottom>
-        <button type="submit">Fechar Compra</button>
-        <button>Cancelar</button>
+      <Bottom address={blockEdit.address} payment={blockEdit.payment}>
+        <button disabled={!(blockEdit.address && blockEdit.payment)} onClick={() => navigate('/success')}>Fechar Compra</button>
+        <button onClick={() => navigate('/')}>Cancelar</button>
       </Bottom>
     </Container>
   );
@@ -241,7 +274,7 @@ const TwoInputsLine = styled.div`
   }
 
   input:nth-last-of-type(1) {
-    width: 40px;
+    width: 60px;
   }
 `;
 
@@ -269,6 +302,70 @@ const OneInputLine = styled.div`
   }  
 `;
 
+const PaymentButtons = styled.div`
+  width: 100%;
+
+  display: flex;
+  justify-content: center;
+
+  button {
+    background-color: #E99BAF;
+    border: none;
+    border-radius: 5px;
+    outline: none;
+    color: #FFFFFF;
+    font-size: 16px;
+    font-weight: 600;
+
+    width: 100px;
+    margin-top: 10px;
+    margin-right: 5px;
+    padding: 5px 8px;
+  }
+
+  button:first-of-type {
+    background-color: ${({ payment  }) => payment ? "#E99BAF" : "#A7A7A7"};
+    cursor: ${({ payment  }) => payment ? "pointer" : "initial"};
+  }
+
+  button:last-of-type {
+    background-color: ${({ payment  }) => !payment ? "#E99BAF" : "#A7A7A7"};
+    cursor: ${({ payment  }) => !payment ? "pointer" : "initial"};
+  }
+`;
+
+const AddressButtons = styled.div`
+  width: 100%;
+
+  display: flex;
+  justify-content: center;
+
+  button {
+    background-color: #E99BAF;
+    border: none;
+    border-radius: 5px;
+    outline: none;
+    color: #FFFFFF;
+    font-size: 16px;
+    font-weight: 600;
+
+    width: 100px;
+    margin-top: 10px;
+    margin-right: 5px;
+    padding: 5px 8px;
+  }
+
+  button:first-of-type {
+    background-color: ${({ address }) => address ? "#E99BAF" : "#A7A7A7"};
+    cursor: ${({ address }) => address ? "pointer" : "initial"};
+  }
+
+  button:last-of-type {
+    background-color: ${({ address }) => !address ? "#E99BAF" : "#A7A7A7"};
+    cursor: ${({ address }) => !address ? "pointer" : "initial"};
+  }
+`;
+
 const Bottom = styled.div`
   width: 100%;
   
@@ -282,13 +379,13 @@ const Bottom = styled.div`
     font-weight: 700;
     border: none;
     outline: none;
-    cursor: pointer;
   }
 
   button:first-of-type {
-    background-color: #E99BAF;
+    background-color: ${({ address, payment  }) => address && payment ? "#E99BAF" : "#A7A7A7"};
     color: #FFFFFF;
     border-radius: 5px;
+    cursor: ${({ address, payment  }) => address && payment ? "pointer" : "initial"};
 
     width: 170px;
     height: 35px;
@@ -298,6 +395,7 @@ const Bottom = styled.div`
   button:last-of-type {
     background-color: #FFFFFF;
     color: #A7A7A7;
+    cursor: pointer;
 
     margin-top: 8px;
   }
