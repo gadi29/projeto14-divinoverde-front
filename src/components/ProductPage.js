@@ -98,7 +98,7 @@ const Container = styled.div`
   display: flex;
   align-items: center;
   flex-direction: column;
-  margin-top: 50px;
+  margin-top: 105px;
 
   img {
     border-radius: 5px;

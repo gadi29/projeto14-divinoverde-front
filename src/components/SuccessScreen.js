@@ -28,6 +28,7 @@ export default function Success() {
 const Container = styled.div`
   width: 100%;
   height: 90vh;
+  margin-top: 65px;
   
   display: flex;
   flex-direction: column;

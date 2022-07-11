@@ -129,7 +129,7 @@ const Container = styled.div`
 
   align-items: center;
   flex-direction: column;
-  margin-top: 10px;
+  margin-top: 75px;
   h1 {
     width: 375px;
     font-size: 30px;

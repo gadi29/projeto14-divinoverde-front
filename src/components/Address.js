@@ -110,6 +110,7 @@ export default function Address() {
 const Container = styled.div`
   width: 100vw;
   height: 90vh;
+  margin-top: 65px;
   display: flex;
   justify-content: center;
   align-items: center;
