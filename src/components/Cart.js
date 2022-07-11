@@ -22,6 +22,13 @@ export default function Cart() {
     };
   }
 
+  let existCart;
+  if (userCart) {
+    existCart = userCart.length > 0;
+  } else {
+    existCart = false;
+  }
+
   React.useEffect(() => {
     const promise = axios.get(
       `https://divinoverde-back.herokuapp.com/cart`,
@@ -100,13 +107,13 @@ export default function Cart() {
           <TailSpin />
         </Container>
       ) : (
-        <Container userCart={userCart.length > 0}>
+        <Container existCart={existCart}>
           <h1>Carrinho</h1>
           {loadItem ? <TailSpin /> : loadCartItem()}      
           <button disabled={!user || !userCart} onClick={() => {
             if (!user) {
               navigate("/sign-in");
-            } else if (userCart.length > 0) {
+            } else if (existCart) {
               navigate("/checkout");
             }
           }}>Fechar compra</button>
@@ -138,7 +145,7 @@ const Container = styled.div`
     border: none;
     width: 170px;
     height: 35px;
-    background-color: ${({ userCart }) => (userCart) ? "#e99baf" : "#A7A7A7"};
+    background-color: ${({ existCart }) => (existCart) ? "#e99baf" : "#A7A7A7"};
     color: #fff;
     border-radius: 5px;
     font-size: 20px;
@@ -146,8 +153,8 @@ const Container = styled.div`
     margin-top: 40px;
     font-weight: 700;
     &:hover {
-      cursor: ${({ userCart }) => ( userCart) ? "pointer" : "initial"};
-      filter: ${({ userCart }) => ( userCart) ? "brightness(130%)" : "initial"};
+      cursor: ${({ existCart }) => ( existCart ) ? "pointer" : "initial"};
+      filter: ${({ existCart }) => ( existCart ) ? "brightness(130%)" : "initial"};
     }
   }
   a {

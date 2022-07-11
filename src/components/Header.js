@@ -46,6 +46,10 @@ const Container = styled.header`
   justify-content: space-between;
   align-items: center;
 
+  position: fixed;
+  top: 0;
+  left: 0;
+
   h1 {
     font-family: "Judson", serif !important;
     color: #ffffff;
