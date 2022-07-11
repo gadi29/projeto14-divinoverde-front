@@ -143,6 +143,7 @@ const Container = styled.div`
     border-radius: 5px;
     font-size: 20px;
     margin: 10px;
+    margin-top: 40px;
     font-weight: 700;
     &:hover {
       cursor: ${({ userCart }) => ( userCart) ? "pointer" : "initial"};
