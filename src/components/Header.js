@@ -41,6 +41,7 @@ const Container = styled.header`
   width: 100%;
   height: 65px;
   padding: 0 15px;
+  z-index: 1;
 
   display: flex;
   justify-content: space-between;

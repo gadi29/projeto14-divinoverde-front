@@ -92,7 +92,7 @@ function Home() {
 export default Home;
 
 const Container = styled.div`
-  margin-top: 65px;
+  margin-top: 80px;
   padding: 0 15px;
 `;
 
