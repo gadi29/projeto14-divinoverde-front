@@ -32,8 +32,8 @@ function SignIn() {
       }
     } catch (error) {
       setLoad(false);
-      alert(`Erro ${error}`);
-    }
+      alert(error);
+    };
   }
 
   function login(e) {
@@ -70,9 +70,7 @@ function SignIn() {
           placeholder="E-mail"
           value={newRegister.email}
           disabled={load}
-          onChange={(e) =>
-            setNewRegister({ ...newRegister, email: e.target.value })
-          }
+          onChange={(e) => setNewRegister({ email: e.target.value })}
           required
         />
         <button type="submit">

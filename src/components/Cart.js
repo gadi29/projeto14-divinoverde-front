@@ -84,14 +84,19 @@ export default function Cart() {
   return (
     <>
       {load ? (
-        <Container>
+        <Container user={user} userCart={userCart}>
           <TailSpin />
         </Container>
       ) : (
         <Container>
           <h1>Carrinho</h1>
+
           {loadItem ? <TailSpin /> : loadCartItem()}
-          <button onClick={() => navigate("/checkout")}>Fechar compra</button>
+         
+
+      
+          <button disabled={!user || !userCart} onClick={() => navigate("/checkout")}>Fechar compra</button>
+
 
           <Link to="/">Continuar comprando</Link>
         </Container>
@@ -122,15 +127,15 @@ const Container = styled.div`
     border: none;
     width: 170px;
     height: 35px;
-    background-color: #e99baf;
+    background-color: ${({ user, userCart }) => (user && userCart) ? "#e99baf" : "#A7A7A7"};
     color: #fff;
     border-radius: 5px;
     font-size: 20px;
     margin: 10px;
     font-weight: 700;
     &:hover {
-      cursor: pointer;
-      filter: brightness(130%);
+      cursor: ${({ user, userCart }) => (user && userCart) ? "pointer" : "initial"};
+      filter: ${({ user, userCart }) => (user && userCart) ? "brightness(130%)" : "initial"};
     }
   }
   a {

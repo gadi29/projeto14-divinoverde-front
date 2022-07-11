@@ -6,18 +6,18 @@ export default function Success() {
   const navigate = useNavigate();
   const [seconds, setSeconds] = useState(5);
   const SEG_1 = 1000;
-  let timeoutID;
 
-  setTimeout(() => setSeconds(seconds - 1), SEG_1)
+  setTimeout(() => setSeconds(seconds - 1), SEG_1);
 
-  timeoutID = setTimeout(() => navigate("/"), SEG_1 * 5);
+  if (seconds === 0) {
+    navigate('/');
+  }
 
   return (
     <Container>
       <ion-icon name="checkmark-circle-outline"></ion-icon>
       <h2>Pedido Realizado com Sucesso</h2>
       <button onClick={() => {
-        clearTimeout(timeoutID); //não está funcionando
         navigate("/");
       }}>Voltar para página inicial</button>
       <span>Redirencionando em {seconds}</span>
