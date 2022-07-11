@@ -22,7 +22,10 @@ export default function Cart() {
   }
 
   React.useEffect(() => {
-    const promise = axios.get(`http://localhost:5000/cart`, config);
+    const promise = axios.get(
+      `https://divinoverde-back.herokuapp.com/cart`,
+      config
+    );
     promise.then((res) => {
       setTotal(res.data.total);
       setUserCart(res.data.userData);

@@ -17,10 +17,13 @@ function SignIn() {
   async function sendToSignUp(e) {
     e.preventDefault();
     setLoad(true);
-    
+
     try {
-      console.log(newRegister)
-      const { status } = await axios.get("http://localhost:5000/sign-in", { ...newRegister, });
+      console.log(newRegister);
+      const { status } = await axios.get(
+        "https://divinoverde-back.herokuapp.com/sign-in",
+        { ...newRegister }
+      );
 
       if (status === 200) {
         setUserCreate({ ...userCreate, email: newRegister.email });
@@ -30,15 +33,18 @@ function SignIn() {
     } catch (error) {
       setLoad(false);
       alert(`Erro ${error}`);
-    };
+    }
   }
 
   function login(e) {
     e.preventDefault();
     setLoad(true);
-    const promisse = axios.post("http://localhost:5000/sign-in", {
-      ...userSignIn,
-    });
+    const promisse = axios.post(
+      "https://divinoverde-back.herokuapp.com/sign-in",
+      {
+        ...userSignIn,
+      }
+    );
 
     promisse.then((r) => {
       setUser(r.data);
@@ -64,7 +70,9 @@ function SignIn() {
           placeholder="E-mail"
           value={newRegister.email}
           disabled={load}
-          onChange={(e) => setNewRegister({ ...newRegister, email: e.target.value})}
+          onChange={(e) =>
+            setNewRegister({ ...newRegister, email: e.target.value })
+          }
           required
         />
         <button type="submit">

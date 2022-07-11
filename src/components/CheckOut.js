@@ -32,7 +32,10 @@ export default function CheckOut() {
   }
 
   React.useEffect(() => {
-    const promise = axios.get(`http://localhost:5000/cart`, config);
+    const promise = axios.get(
+      `https://divinoverde-back.herokuapp.com/cart`,
+      config
+    );
     promise.then((res) => {
       setTotal(res.data.total);
       setUserCart(res.data.userData);
@@ -61,14 +64,17 @@ export default function CheckOut() {
     );
   }
 
-  const [blockEdit, setBlockEdit] = useState({ address: false, payment:false });
+  const [blockEdit, setBlockEdit] = useState({
+    address: false,
+    payment: false,
+  });
 
   const navigate = useNavigate();
 
   function paymentBlock(e) {
     e.preventDefault();
 
-    setBlockEdit({ ...blockEdit, payment:true });
+    setBlockEdit({ ...blockEdit, payment: true });
     setShowAddress(true);
     setShowPayment(false);
   }
@@ -76,9 +82,8 @@ export default function CheckOut() {
   function addressBlock(e) {
     e.preventDefault();
 
-    setBlockEdit({ ...blockEdit, address:true });
+    setBlockEdit({ ...blockEdit, address: true });
     setShowAddress(false);
-
   }
 
   return (
@@ -130,8 +135,15 @@ export default function CheckOut() {
               />
             </OneInputLine>
             <PaymentButtons payment={blockEdit.payment}>
-              <button disabled={!blockEdit.payment} onClick={() => setBlockEdit({ ...blockEdit, payment:false})}>Editar</button>
-              <button disabled={blockEdit.payment} type="submit">Confirmar</button>
+              <button
+                disabled={!blockEdit.payment}
+                onClick={() => setBlockEdit({ ...blockEdit, payment: false })}
+              >
+                Editar
+              </button>
+              <button disabled={blockEdit.payment} type="submit">
+                Confirmar
+              </button>
             </PaymentButtons>
           </form>
         </Payment>
@@ -207,20 +219,31 @@ export default function CheckOut() {
               />
             </TwoInputsLine>
             <AddressButtons address={blockEdit.address}>
-              <button disabled={!blockEdit.address} onClick={() => setBlockEdit({ ...blockEdit, address:false})}>Editar</button>
-              <button disabled={blockEdit.address} type="submit">Confirmar</button>
+              <button
+                disabled={!blockEdit.address}
+                onClick={() => setBlockEdit({ ...blockEdit, address: false })}
+              >
+                Editar
+              </button>
+              <button disabled={blockEdit.address} type="submit">
+                Confirmar
+              </button>
             </AddressButtons>
           </form>
         </Address>
       </Top>
       <Bottom address={blockEdit.address} payment={blockEdit.payment}>
-        <button disabled={!(blockEdit.address && blockEdit.payment)} onClick={() => navigate('/success')}>Fechar Compra</button>
-        <button onClick={() => navigate('/')}>Cancelar</button>
+        <button
+          disabled={!(blockEdit.address && blockEdit.payment)}
+          onClick={() => navigate("/success")}
+        >
+          Fechar Compra
+        </button>
+        <button onClick={() => navigate("/")}>Cancelar</button>
       </Bottom>
     </Container>
   );
 }
-
 const Container = styled.div`
   width: 100%;
   height: 85vh;
@@ -376,11 +399,11 @@ const PaymentButtons = styled.div`
   justify-content: center;
 
   button {
-    background-color: #E99BAF;
+    background-color: #e99baf;
     border: none;
     border-radius: 5px;
     outline: none;
-    color: #FFFFFF;
+    color: #ffffff;
     font-size: 16px;
     font-weight: 600;
 
@@ -391,13 +414,13 @@ const PaymentButtons = styled.div`
   }
 
   button:first-of-type {
-    background-color: ${({ payment  }) => payment ? "#E99BAF" : "#A7A7A7"};
-    cursor: ${({ payment  }) => payment ? "pointer" : "initial"};
+    background-color: ${({ payment }) => (payment ? "#E99BAF" : "#A7A7A7")};
+    cursor: ${({ payment }) => (payment ? "pointer" : "initial")};
   }
 
   button:last-of-type {
-    background-color: ${({ payment  }) => !payment ? "#E99BAF" : "#A7A7A7"};
-    cursor: ${({ payment  }) => !payment ? "pointer" : "initial"};
+    background-color: ${({ payment }) => (!payment ? "#E99BAF" : "#A7A7A7")};
+    cursor: ${({ payment }) => (!payment ? "pointer" : "initial")};
   }
 `;
 
@@ -408,11 +431,11 @@ const AddressButtons = styled.div`
   justify-content: center;
 
   button {
-    background-color: #E99BAF;
+    background-color: #e99baf;
     border: none;
     border-radius: 5px;
     outline: none;
-    color: #FFFFFF;
+    color: #ffffff;
     font-size: 16px;
     font-weight: 600;
 
@@ -423,13 +446,13 @@ const AddressButtons = styled.div`
   }
 
   button:first-of-type {
-    background-color: ${({ address }) => address ? "#E99BAF" : "#A7A7A7"};
-    cursor: ${({ address }) => address ? "pointer" : "initial"};
+    background-color: ${({ address }) => (address ? "#E99BAF" : "#A7A7A7")};
+    cursor: ${({ address }) => (address ? "pointer" : "initial")};
   }
 
   button:last-of-type {
-    background-color: ${({ address }) => !address ? "#E99BAF" : "#A7A7A7"};
-    cursor: ${({ address }) => !address ? "pointer" : "initial"};
+    background-color: ${({ address }) => (!address ? "#E99BAF" : "#A7A7A7")};
+    cursor: ${({ address }) => (!address ? "pointer" : "initial")};
   }
 `;
 
@@ -449,15 +472,16 @@ const Bottom = styled.div`
   }
 
   button:first-of-type {
-
     background-color: #e99baf;
     color: #ffffff;
 
-    background-color: ${({ address, payment  }) => address && payment ? "#E99BAF" : "#A7A7A7"};
-    color: #FFFFFF;
+    background-color: ${({ address, payment }) =>
+      address && payment ? "#E99BAF" : "#A7A7A7"};
+    color: #ffffff;
 
     border-radius: 5px;
-    cursor: ${({ address, payment  }) => address && payment ? "pointer" : "initial"};
+    cursor: ${({ address, payment }) =>
+      address && payment ? "pointer" : "initial"};
 
     width: 170px;
     height: 35px;
@@ -465,14 +489,12 @@ const Bottom = styled.div`
   }
 
   button:last-of-type {
-
     background-color: #ffffff;
     color: #a7a7a7;
 
-    background-color: #FFFFFF;
-    color: #A7A7A7;
+    background-color: #ffffff;
+    color: #a7a7a7;
     cursor: pointer;
-
 
     margin-top: 8px;
   }
