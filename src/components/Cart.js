@@ -33,7 +33,7 @@ export default function Cart() {
       setLoad(false);
     });
     promise.catch(() => setLoad(false));
-    
+
     loadPage();
   }, []);
 
@@ -100,7 +100,7 @@ export default function Cart() {
           <TailSpin />
         </Container>
       ) : (
-        <Container userCart={userCart}>
+        <Container userCart={userCart.length > 0}>
           <h1>Carrinho</h1>
           {loadItem ? <TailSpin /> : loadCartItem()}      
           <button disabled={!user || !userCart} onClick={() => {
