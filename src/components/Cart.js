@@ -8,6 +8,7 @@ import UserContext from "../context/UserContext.js";
 
 export default function Cart() {
   const [load, setLoad] = React.useState(true);
+  const [loadItem, setLoadItem] = React.useState(false);
   const [userCart, setUserCart] = React.useState("");
   const [total, setTotal] = React.useState(0);
   const navigate = useNavigate();
@@ -22,6 +23,30 @@ export default function Cart() {
   }
 
   React.useEffect(() => {
+    loadPage();
+  }, []);
+
+  function deleteItem(id) {
+    setLoadItem(true);
+    const promise = axios.delete(
+      `https://divinoverde-back.herokuapp.com/deleteitem/${id}`,
+      config
+    );
+    promise.then((res) => {
+      const novoCart = axios.get(
+        `https://divinoverde-back.herokuapp.com/cart`,
+        config
+      );
+      novoCart.then((res) => {
+        setUserCart(res.data.userData);
+        setTotal(res.data.total);
+        setLoadItem(false);
+      });
+    });
+    return;
+  }
+
+  function loadPage() {
     const promise = axios.get(
       `https://divinoverde-back.herokuapp.com/cart`,
       config
@@ -32,20 +57,20 @@ export default function Cart() {
       setLoad(false);
     });
     promise.catch(() => setLoad(false));
-  }, []);
-
+  }
   function loadCartItem() {
     if (userCart) {
       return (
         <>
           {userCart.map((e, index) => (
             <CartItem
-              userCartIndex={userCart[index]}
-              key={index}
+              userCartIndex={e}
               userCart={userCart}
               setUserCart={setUserCart}
               setTotal={setTotal}
               total={total}
+              deleteItem={deleteItem}
+              key={index}
             />
           ))}
           <p>Valor total R$ {total.toFixed(2).replace(".", ",")}</p>
@@ -65,7 +90,7 @@ export default function Cart() {
       ) : (
         <Container>
           <h1>Carrinho</h1>
-          {loadCartItem()}
+          {loadItem ? <TailSpin /> : loadCartItem()}
           <button onClick={() => navigate("/checkout")}>Fechar compra</button>
 
           <Link to="/">Continuar comprando</Link>
