@@ -1,23 +1,80 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+import CheckOutItems from "./CheckOutItems.js";
+import UserContext from "../context/UserContext.js";
+import axios from "axios";
+import { TailSpin } from "react-loader-spinner";
 
-export default function CheckOut () {
-  const [payment, setPayment] = useState({ name:"", cardNum:"" });
-  const [address, setAddress] = useState({ street:"", number:"", district:"", city:"", stateUF:"" })
+export default function CheckOut() {
+  const [payment, setPayment] = useState({ name: "", cardNum: "" });
+  const [address, setAddress] = useState({
+    street: "",
+    number: "",
+    district: "",
+    city: "",
+    stateUF: "",
+  });
   const [showPayment, setShowPayment] = useState(false);
   const [showAddress, setShowAddress] = useState(false);
+  const [userCart, setUserCart] = React.useState("");
+  const [total, setTotal] = React.useState(0);
+  const { user, setUser } = React.useContext(UserContext);
+  const [load, setLoad] = React.useState(true);
+  let config = "";
+  if (user) {
+    config = {
+      headers: {
+        Authorization: `Bearer ${user.token}`,
+      },
+    };
+  }
 
+  React.useEffect(() => {
+    const promise = axios.get(`http://localhost:5000/cart`, config);
+    promise.then((res) => {
+      setTotal(res.data.total);
+      setUserCart(res.data.userData);
+      setLoad(false);
+    });
+    promise.catch(() => setLoad(false));
+  }, []);
+
+  function loadItems() {
+    if (!user || !userCart) {
+      return <>vazio</>;
+    }
+    return (
+      <>
+        {userCart.map((e, index) => {
+          return (
+            <CheckOutItems
+              user={user}
+              userCart={userCart}
+              userCartIndex={e}
+              key={index}
+            />
+          );
+        })}
+      </>
+    );
+  }
 
   return (
     <Container>
       <Top showPayment={showPayment} showAddress={showAddress}>
         <h2>Checkout</h2>
         <h5>Itens:</h5>
-        <h4>Valor total = R$TOTAL</h4>
-        <h3 onClick={() => {
-          setShowAddress(false);
-          setShowPayment(!showPayment);
-          }}>Pagamento</h3>
+        {load ? <TailSpin /> : loadItems()}
+
+        <h4>Valor total = R${total.toFixed(2).replace(".", ",")}</h4>
+        <h3
+          onClick={() => {
+            setShowAddress(false);
+            setShowPayment(!showPayment);
+          }}
+        >
+          Pagamento
+        </h3>
         <Payment showPayment={showPayment}>
           <form>
             <OneInputLine>
@@ -50,10 +107,14 @@ export default function CheckOut () {
             </OneInputLine>
           </form>
         </Payment>
-        <h3 onClick={() => {
-          setShowPayment(false);
-          setShowAddress(!showAddress);
-          }}>Endereço</h3>
+        <h3
+          onClick={() => {
+            setShowPayment(false);
+            setShowAddress(!showAddress);
+          }}
+        >
+          Endereço
+        </h3>
         <Address showAddress={showAddress}>
           <form>
             <TwoInputsLine>
@@ -140,7 +201,7 @@ const Top = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  
+
   h2 {
     font-size: 24px;
     font-weight: 700;
@@ -168,8 +229,8 @@ const Top = styled.div`
   }
 
   h3 {
-    background-color: #72AB97;
-    color: #FFFFFF;
+    background-color: #72ab97;
+    color: #ffffff;
     font-size: 15px;
     font-weight: 600;
     cursor: pointer;
@@ -181,18 +242,20 @@ const Top = styled.div`
   }
 
   h3:first-of-type {
-    border-radius: ${({ showPayment }) => showPayment ? "5px 5px 0 0" : "5px"};
+    border-radius: ${({ showPayment }) =>
+      showPayment ? "5px 5px 0 0" : "5px"};
   }
 
   h3:last-of-type {
-    border-radius: ${({ showAddress }) => showAddress ? "5px 5px 0 0" : "5px"};
+    border-radius: ${({ showAddress }) =>
+      showAddress ? "5px 5px 0 0" : "5px"};
   }
 `;
 
 const Payment = styled.div`
-  background-color: #F1F4F1;
+  background-color: #f1f4f1;
   border-radius: 0 0 5px 5px;
-  display: ${({ showPayment }) => showPayment ? "inherit" : "none"};
+  display: ${({ showPayment }) => (showPayment ? "inherit" : "none")};
 
   width: 100%;
   max-width: 766px;
@@ -204,9 +267,9 @@ const Payment = styled.div`
 `;
 
 const Address = styled.div`
-  background-color: #F1F4F1;
+  background-color: #f1f4f1;
   border-radius: 0 0 5px 5px;
-  display: ${({ showAddress }) => showAddress ? "inherit" : "none"};
+  display: ${({ showAddress }) => (showAddress ? "inherit" : "none")};
 
   width: 100%;
   max-width: 766px;
@@ -230,7 +293,7 @@ const TwoInputsLine = styled.div`
   }
 
   input {
-    background-color: #D9D9D9;
+    background-color: #d9d9d9;
     border: none;
     outline: none;
 
@@ -258,7 +321,7 @@ const OneInputLine = styled.div`
   }
 
   input {
-    background-color: #D9D9D9;
+    background-color: #d9d9d9;
     border: none;
     outline: none;
 
@@ -266,17 +329,17 @@ const OneInputLine = styled.div`
     margin-bottom: 5px;
     margin-right: 8px;
     padding: 5px;
-  }  
+  }
 `;
 
 const Bottom = styled.div`
   width: 100%;
-  
+
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  
+
   button {
     font-size: 18px;
     font-weight: 700;
@@ -286,8 +349,8 @@ const Bottom = styled.div`
   }
 
   button:first-of-type {
-    background-color: #E99BAF;
-    color: #FFFFFF;
+    background-color: #e99baf;
+    color: #ffffff;
     border-radius: 5px;
 
     width: 170px;
@@ -296,8 +359,8 @@ const Bottom = styled.div`
   }
 
   button:last-of-type {
-    background-color: #FFFFFF;
-    color: #A7A7A7;
+    background-color: #ffffff;
+    color: #a7a7a7;
 
     margin-top: 8px;
   }
