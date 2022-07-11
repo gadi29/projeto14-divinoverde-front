@@ -59,6 +59,7 @@ export default function CheckOut() {
         })}
       </>
     );
+  }
 
   const [blockEdit, setBlockEdit] = useState({ address: false, payment:false });
 
