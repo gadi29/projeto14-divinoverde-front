@@ -110,6 +110,8 @@ export default function CheckOut() {
                 type="text"
                 id="name"
                 value={payment.name}
+                minLength={3}
+                maxLength={50}
                 disabled={blockEdit.payment}
                 onChange={(e) =>
                   setPayment({ ...payment, name: e.target.value })
@@ -163,6 +165,8 @@ export default function CheckOut() {
                 type="text"
                 id="street"
                 value={address.street}
+                minLength={2}
+                maxLength={50}
                 disabled={blockEdit.address}
                 onChange={(e) =>
                   setAddress({ ...address, street: e.target.value })
@@ -174,6 +178,8 @@ export default function CheckOut() {
                 type="number"
                 id="number"
                 value={address.number}
+                minLength={1}
+                maxLength={5}
                 disabled={blockEdit.address}
                 onChange={(e) =>
                   setAddress({ ...address, number: e.target.value })
@@ -187,6 +193,8 @@ export default function CheckOut() {
                 type="text"
                 id="district"
                 value={address.district}
+                minLength={3}
+                maxLength={50}
                 disabled={blockEdit.address}
                 onChange={(e) =>
                   setAddress({ ...address, district: e.target.value })
@@ -200,6 +208,8 @@ export default function CheckOut() {
                 type="text"
                 id="city"
                 value={address.city}
+                minLength={3}
+                maxLength={50}
                 disabled={blockEdit.address}
                 onChange={(e) =>
                   setAddress({ ...address, city: e.target.value })
@@ -211,6 +221,8 @@ export default function CheckOut() {
                 type="text"
                 id="state"
                 value={address.stateUF}
+                minLength={2}
+                maxLength={2}
                 disabled={blockEdit.address}
                 onChange={(e) =>
                   setAddress({ ...address, stateUF: e.target.value })
